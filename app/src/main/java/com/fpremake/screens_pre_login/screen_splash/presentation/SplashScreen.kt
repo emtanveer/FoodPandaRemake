@@ -48,7 +48,7 @@ fun SplashUIContent(navController: NavHostController?) {
                     .align(CenterHorizontally)
                     .padding(top = 30.dp),
                 onClick = {
-                    navController?.navigateAndReplaceStartRoute("dashboard")
+                    navController?.navigateAndReplaceStartRoute("post-login")
                 })
             {
                 Text(text = "Go to Dashboard Screen", color = Color.White)
