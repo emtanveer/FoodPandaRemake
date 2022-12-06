@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.fpremake.navigation.navigateAndReplaceStartRoute
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
@@ -47,8 +48,7 @@ fun SplashUIContent(navController: NavHostController?) {
                     .align(CenterHorizontally)
                     .padding(top = 30.dp),
                 onClick = {
-                    navController?.navigate("dashboard") {
-                    }
+                    navController?.navigateAndReplaceStartRoute("dashboard")
                 })
             {
                 Text(text = "Go to Dashboard Screen", color = Color.White)

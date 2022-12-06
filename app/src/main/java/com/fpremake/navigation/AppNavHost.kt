@@ -56,15 +56,17 @@ fun AppNavHost(
     }
 
 }
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
 fun NavGraphBuilder.preLoginGraph(
     navController: NavHostController,
 //    scaffoldState: ScaffoldState,
 //    scope: CoroutineScope
 ) {
-    composable("splash") {
-        SplashScreen(navController)
-    }
+//    navigation(startDestination = "splash", route = "pre-login") {
+        composable("splash") {
+            SplashScreen(navController)
+        }
+//    }
 }
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun NavGraphBuilder.postLoginGraph(
@@ -73,7 +75,7 @@ fun NavGraphBuilder.postLoginGraph(
     scope: CoroutineScope
 ) {
 
-    navigation(startDestination = "username", route = "login") {
+    navigation(startDestination = "dashboard", route = "post-login") {
         composable("dashboard") {
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -92,3 +94,4 @@ fun NavGraphBuilder.postLoginGraph(
         }
     }
 }
+
