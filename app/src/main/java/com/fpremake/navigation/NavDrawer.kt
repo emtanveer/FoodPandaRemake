@@ -54,34 +54,6 @@ private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
         NavigationDrawerItem(
             icon = {
                 Icon(
-                    painter = painterResource(id = drawable.ic_dashboard),
-                    contentDescription = "Splash",
-                    modifier = Modifier.size(
-                        width = 25.dp,
-                        height = 25.dp
-                    )
-                )
-            },
-            label = { Text(text = "Splash") },
-            selected = currentRoute == "splash",
-            onClick = {
-                navController?.navigate("splash") {
-                    //Helps in the backstack clearing when navigating
-                    //from one screen to other, means no screen will
-                    //stack when routing from drawer screen by below code.
-                    launchSingleTop = true
-                    popUpTo("splash") {
-                        saveState = true
-                    }
-                }
-
-                closeNavDrawer()
-            },
-        )
-
-        NavigationDrawerItem(
-            icon = {
-                Icon(
                     painter = painterResource(id = drawable.ic_invoices),
                     contentDescription = "Dashboard",
                     modifier = Modifier.size(
@@ -99,6 +71,35 @@ private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
                     //stack when routing from drawer screen by below code.
                     launchSingleTop = true
                     popUpTo("dashboard") {
+                        saveState = true
+                    }
+                }
+
+                closeNavDrawer()
+            },
+        )
+
+
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = drawable.ic_dashboard),
+                    contentDescription = "Location",
+                    modifier = Modifier.size(
+                        width = 25.dp,
+                        height = 25.dp
+                    )
+                )
+            },
+            label = { Text(text = "Location") },
+            selected = currentRoute == "landing_location",
+            onClick = {
+                navController?.navigate("landing_location") {
+                    //Helps in the backstack clearing when navigating
+                    //from one screen to other, means no screen will
+                    //stack when routing from drawer screen by below code.
+                    launchSingleTop = true
+                    popUpTo("landing_location") {
                         saveState = true
                     }
                 }

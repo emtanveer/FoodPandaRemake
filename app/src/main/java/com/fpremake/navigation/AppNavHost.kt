@@ -16,6 +16,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.DialogFragmentNavigator.Destination
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreen
+import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.screens_pre_login.screen_splash.presentation.SplashScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -40,34 +41,25 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        preLoginGraph(
-            navController = navController,
-//            scaffoldState = scaffoldState,
-//            scope = scope
-        )
+        preLoginGraph(navController = navController,)
 
         postLoginGraph(
             navController = navController,
             scaffoldState = scaffoldState,
             scope = scope
         )
-
-
     }
 
 }
 
 fun NavGraphBuilder.preLoginGraph(
     navController: NavHostController,
-//    scaffoldState: ScaffoldState,
-//    scope: CoroutineScope
 ) {
-//    navigation(startDestination = "splash", route = "pre-login") {
-        composable("splash") {
-            SplashScreen(navController)
-        }
-//    }
+    composable("splash") {
+        SplashScreen(navController)
+    }
 }
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun NavGraphBuilder.postLoginGraph(
     navController: NavHostController,
@@ -92,6 +84,23 @@ fun NavGraphBuilder.postLoginGraph(
             }
 
         }
+        composable("landing_location") {
+            Scaffold(
+                scaffoldState = scaffoldState,
+                drawerContent = {
+                    DrawerHeader()
+                    DrawerBody(navController = navController, closeNavDrawer = {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    })
+                },
+            ) {
+                LandingLocationScreen()
+            }
+
+        }
+
     }
 }
 

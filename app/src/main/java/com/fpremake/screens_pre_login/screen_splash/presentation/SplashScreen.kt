@@ -1,20 +1,20 @@
 package com.fpremake.screens_pre_login.screen_splash.presentation
 
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.fpremake.navigation.navigateAndReplaceStartRoute
+import com.fpremake.R
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
@@ -23,36 +23,21 @@ fun SplashScreen(navController: NavHostController) {
 
 @Composable
 fun SplashUIContent(navController: NavHostController?) {
-    Surface(
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.pink))
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp)
+            Text(
+                modifier = Modifier,
 
-            ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Welcome to Splash Screen",
-                    fontSize = 24.sp
-                )
-            }
-
-            Button(
-                modifier = Modifier
-                    .align(CenterHorizontally)
-                    .padding(top = 30.dp),
-                onClick = {
-                    navController?.navigateAndReplaceStartRoute("post-login")
-                })
-            {
-                Text(text = "Go to Dashboard Screen", color = Color.White)
-            }
+                fontSize = 30.sp,
+                text = "Food Panda"
+            )
         }
     }
 }
