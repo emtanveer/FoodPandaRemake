@@ -67,7 +67,7 @@ fun NavGraphBuilder.postLoginGraph(
     scope: CoroutineScope
 ) {
 
-    navigation(startDestination = "dashboard", route = "post-login") {
+    navigation(startDestination = "landing_location", route = "post-login") {
         composable("dashboard") {
             Scaffold(
                 scaffoldState = scaffoldState,
