@@ -40,74 +40,112 @@ fun DrawerBody(navController: NavHostController?, closeNavDrawer: () -> Unit) {
 @Composable
 private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
     navController: NavHostController?,
-    closeNavDrawer: () -> Unit
+    closeNavDrawer: () -> Unit,
 ) {
     val navBackStackEntry by navController?.currentBackStackEntryAsState()!!
     val currentRoute = navBackStackEntry?.destination?.route
     val context = LocalContext.current
-
+    val drawerItems = listOf(
+        NavDrawerItem.Splash,
+        NavDrawerItem.Dashboard,
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
-          ) {
+    ) {
 
-        NavigationDrawerItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = drawable.ic_dashboard),
-                    contentDescription = "Splash",
-                    modifier = Modifier.size(
-                        width = 25.dp,
-                        height = 25.dp
-                    )
-                )
-            },
-            label = { Text(text = "Splash") },
-            selected = currentRoute == "splash",
-            onClick = {
-                navController?.navigate("splash") {
+        drawerItems.forEach { item ->
+            DrawerItem(item = item, selected = currentRoute == item.route, onItemClick = {
+                navController?.navigate(item.route) {
                     //Helps in the backstack clearing when navigating
                     //from one screen to other, means no screen will
                     //stack when routing from drawer screen by below code.
                     launchSingleTop = true
-                    popUpTo("splash") {
+                    popUpTo(item.route) {
                         saveState = true
                     }
                 }
-
                 closeNavDrawer()
-            },
-        )
+            })
+        }
 
-        NavigationDrawerItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = drawable.ic_invoices),
-                    contentDescription = "Dashboard",
-                    modifier = Modifier.size(
-                        width = 25.dp,
-                        height = 25.dp
-                    )
-                )
-            },
-            label = { Text(text = "Dashboard",) },
-            selected = currentRoute == "dashboard",
-            onClick = {
-                navController?.navigate("dashboard") {
-                    //Helps in the backstack clearing when navigating
-                    //from one screen to other, means no screen will
-                    //stack when routing from drawer screen by below code.
-                    launchSingleTop = true
-                    popUpTo("dashboard") {
-                        saveState = true
-                    }
-                }
-
-                closeNavDrawer()
-            },
-        )
+//        NavigationDrawerItem(
+//            icon = {
+//                Icon(
+//                    painter = painterResource(id = drawable.ic_dashboard),
+//                    contentDescription = "Splash",
+//                    modifier = Modifier.size(
+//                        width = 25.dp,
+//                        height = 25.dp
+//                    )
+//                )
+//            },
+//            label = { Text(text = "Splash") },
+//            selected = currentRoute == "splash",
+//            onClick = {
+//                navController?.navigate("splash") {
+//                    //Helps in the backstack clearing when navigating
+//                    //from one screen to other, means no screen will
+//                    //stack when routing from drawer screen by below code.
+//                    launchSingleTop = true
+//                    popUpTo("splash") {
+//                        saveState = true
+//                    }
+//                }
+//
+//                closeNavDrawer()
+//            },
+//        )
+//
+//        NavigationDrawerItem(
+//            icon = {
+//                Icon(
+//                    painter = painterResource(id = drawable.ic_invoices),
+//                    contentDescription = "Dashboard",
+//                    modifier = Modifier.size(
+//                        width = 25.dp,
+//                        height = 25.dp
+//                    )
+//                )
+//            },
+//            label = { Text(text = "Dashboard") },
+//            selected = currentRoute == "dashboard",
+//            onClick = {
+//                navController?.navigate("dashboard") {
+//                    //Helps in the backstack clearing when navigating
+//                    //from one screen to other, means no screen will
+//                    //stack when routing from drawer screen by below code.
+//                    launchSingleTop = true
+//                    popUpTo("dashboard") {
+//                        saveState = true
+//                    }
+//                }
+//
+//                closeNavDrawer()
+//            },
+//        )
     }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerItem) -> Unit) {
+    NavigationDrawerItem(
+        label = { Text(text = item.title) },
+        selected = selected,
+        onClick = { onItemClick(item) },
+        icon = {
+            Icon(
+                painter = painterResource(id = item.icon),
+                contentDescription = item.title,
+                modifier = Modifier.size(
+                    width = 25.dp,
+                    height = 25.dp
+                )
+            )
+        },
+    )
 }
 
 /**
@@ -132,10 +170,11 @@ fun PreviewDrawerBody() {
         )
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PreviewDefaultDrawerNavigationMainBodyItemsWithSelectionEnabled(
-    closeNavDrawer: () -> Unit
+    closeNavDrawer: () -> Unit,
 ) {
     NavigationDrawerItem(
         icon = {
@@ -166,7 +205,7 @@ private fun PreviewDefaultDrawerNavigationMainBodyItemsWithSelectionEnabled(
                 )
             )
         },
-        label = { Text(text = "Dashboard",) },
+        label = { Text(text = "Dashboard") },
         selected = false,
         onClick = {
             closeNavDrawer()
