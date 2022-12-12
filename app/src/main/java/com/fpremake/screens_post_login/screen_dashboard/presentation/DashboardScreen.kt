@@ -9,7 +9,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fpremake.screens_pre_login.screen_splash.presentation.SplashUIContent
 
 @Composable
 fun DashboardScreen() {

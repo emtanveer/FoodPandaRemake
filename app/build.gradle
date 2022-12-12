@@ -58,7 +58,9 @@ final AndroidDevelopmentCoreDependencies = [
         androidxCore      : 'androidx.core:core-ktx:1.7.0',
         androidxAppcompat : 'androidx.appcompat:appcompat:1.5.1',
         androidxMaterial  : 'com.google.android.material:material:1.4.0',
-        androidxConstraint: 'androidx.constraintlayout:constraintlayout:2.1.4'
+        androidxConstraint: 'androidx.constraintlayout:constraintlayout:2.1.4',
+
+
 ]
 
 final testJUnitDependencies = [
@@ -68,6 +70,15 @@ final testJUnitDependencies = [
 final androidTestDependencies = [
         testJunit   : 'androidx.test.ext:junit:1.1.3',
         testEspresso: 'androidx.test.espresso:espresso-core:3.3.0'
+]
+
+final lifeCycleDependencies = [
+        navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.5.3',
+        navigationUi      : 'androidx.navigation:navigation-ui-ktx:2.5.3',
+
+        lifeCycle         : "androidx.lifecycle:lifecycle-runtime:2.5.1",
+        viewModelLifeCycle: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1",
+        kotlinCoroutine   : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
 ]
 
 final composeDependencies = [
@@ -127,6 +138,11 @@ final compileDependencies = [
         lifecycleCompiler: "androidx.lifecycle:lifecycle-compiler:2.3.1"
 ]
 
+final extraDependencies = [
+        // Splash screen Api
+       splashScreen : "androidx.core:core-splashscreen:1.0.0",
+]
+
 //endregion
 
 dependencies {
@@ -135,6 +151,9 @@ dependencies {
     testImplementation testJUnitDependencies.values()
 
     androidTestImplementation androidTestDependencies.values()
+
+    //All the Lifecycle related Libs
+    implementation lifeCycleDependencies.values()
 
     //All required Compose Library
     implementation composeDependencies.values()
@@ -158,4 +177,5 @@ dependencies {
     //annotationProcessor Compilers Dependencies
     annotationProcessor compileDependencies.values()
 
+    implementation extraDependencies.values()
 }

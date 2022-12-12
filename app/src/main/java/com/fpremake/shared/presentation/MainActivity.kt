@@ -1,10 +1,8 @@
 package com.fpremake.shared.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.compose.setContent
-import com.fpremake.R
+import androidx.appcompat.app.AppCompatActivity
 import com.fpremake.navigation.AppNavHost
 
 class MainActivity : AppCompatActivity() {

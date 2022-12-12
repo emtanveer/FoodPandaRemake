@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FoodPandaRemake" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+     <style name="Theme.FoodPandaRemake" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -15,21 +15,16 @@
     </style>
 
     <!-- Customize your theme here. -->
-<!--    <style name="Theme.SplashScreenApp" parent="Theme.FoodPandaRemake">-->
-<!--        <item name="android:statusBarColor">@color/white</item>-->
-<!--    </style>-->
 
-<!--    <style name="SplashScreenTheme" parent="Theme.FoodPandaRemake">-->
-<!--        <item name="android:windowBackground">@drawable/bg_splash</item>-->
-<!--    </style>-->
-
-    <style name="Theme.SplashScreenApp" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="SplashScreenTheme" parent="Theme.SplashScreen">
+        <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
-    </style>
 
-    <style name="SplashScreenTheme" parent="Theme.SplashScreenApp">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-    </style>
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/bg_splash_12</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.SplashScreenApp</item>
 
+    </style>
 
 </resources>
