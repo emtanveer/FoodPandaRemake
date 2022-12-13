@@ -17,8 +17,9 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -138,11 +139,11 @@ final compileDependencies = [
         lifecycleCompiler: "androidx.lifecycle:lifecycle-compiler:2.3.1"
 ]
 
-final extraDependencies = [
+final supportDependencies = [
         // Splash screen Api
-       splashScreen : "androidx.core:core-splashscreen:1.0.0",
+        splashScreen: "androidx.core:core-splashscreen:1.0.0",
+        multiDex    : "androidx.multidex:multidex:2.0.1",
 ]
-
 //endregion
 
 dependencies {
@@ -177,5 +178,5 @@ dependencies {
     //annotationProcessor Compilers Dependencies
     annotationProcessor compileDependencies.values()
 
-    implementation extraDependencies.values()
+    implementation supportDependencies.values()
 }
