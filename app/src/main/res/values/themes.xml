@@ -19,7 +19,7 @@
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.SplashScreenApp">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:windowBackground">@drawable/foodpanda_splash_image</item>
     </style>
 
     <!-- Used for both 12+ and below 12 android version because of the default splash feature in Android 12+ -->
