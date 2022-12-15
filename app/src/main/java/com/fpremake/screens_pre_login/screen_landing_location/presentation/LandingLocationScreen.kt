@@ -31,17 +31,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.fpremake.R
-import com.google.accompanist.permissions.*
+import com.fpremake.navigation.navigateAndReplaceStartRoute
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
 fun LandingLocationScreen(navController: NavHostController?) {
-    LandingLocationUiContent()
+    LandingLocationUiContent(navController)
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
-fun LandingLocationUiContent() {
+fun LandingLocationUiContent(navController: NavHostController?) {
 
     var showFineLocationRationaleMessage by remember {
         mutableStateOf(false)
@@ -149,7 +149,9 @@ fun LandingLocationUiContent() {
             Spacer(modifier = Modifier.size(20.dp))
             Button(modifier = Modifier
                 .fillMaxWidth(),
-                onClick = { },
+                onClick = {
+                    navController?.navigateAndReplaceStartRoute("post-login")
+                },
                 shape = RoundedCornerShape(8.dp)) {
                 Text(
                     modifier = Modifier.padding(10.dp),
@@ -263,7 +265,7 @@ private fun requestAndHandleLocationPermission(
 @Composable
 fun PreviewLandingLocation() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        LandingLocationUiContent()
+        LandingLocationUiContent(null)
     }
 }
 

@@ -32,38 +32,37 @@ class SplashScreen : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
             //Handling via Splash Screen API
-            var keepSplashOnScreen = true
-            val delay = 2000L
-
-            installSplashScreen().setKeepOnScreenCondition { keepSplashOnScreen }
-            Handler(Looper.getMainLooper()).postDelayed({ keepSplashOnScreen = false }, delay)
-
-            lifecycleScope.launchWhenCreated {
-                delay(2000)
-
-                val intent = Intent(this@SplashScreen, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-
-            //Handling via Removing and resourceSplash Screen API
-
-//            setContent {
-//                SplashScreenUiContent()
-//            }
+//            var keepSplashOnScreen = true
+//            val delay = 2000L
 //
-//            GlobalScope.launch { // launch new coroutine in background and continue
-//                delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
+//            installSplashScreen().setKeepOnScreenCondition { keepSplashOnScreen }
+//            Handler(Looper.getMainLooper()).postDelayed({ keepSplashOnScreen = false }, delay)
+//
+//            lifecycleScope.launchWhenCreated {
+//                delay(2000)
 //
 //                val intent = Intent(this@SplashScreen, MainActivity::class.java)
 //                startActivity(intent)
 //                finish()
 //            }
-        } else {
+
+
+            //Handling via Removing and resourceSplash Screen API
             setContent {
                 SplashScreenUiContent()
             }
+            GlobalScope.launch { // launch new coroutine in background and continue
+                delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
 
+                val intent = Intent(this@SplashScreen, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+        else {
+            setContent {
+                SplashScreenUiContent()
+            }
             GlobalScope.launch { // launch new coroutine in background and continue
                 delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
 
@@ -94,6 +93,5 @@ class SplashScreen : ComponentActivity() {
     @Composable
     fun PreviewSplashScreenUiContent() {
         SplashScreenUiContent()
-
     }
 }
