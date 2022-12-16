@@ -4,12 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,19 +31,20 @@ import androidx.navigation.NavHostController
 import com.fpremake.R
 import com.fpremake.navigation.navigateAndReplaceStartRoute
 
-
 @Composable
 fun LandingLocationScreen(navController: NavHostController?) {
     LandingLocationUiContent(navController)
 }
 
-
 @Composable
 fun LandingLocationUiContent(navController: NavHostController?) {
 
+    //state for showing Precise Location Rationale UI when user don't allow permission
     var showFineLocationRationaleMessage by remember {
         mutableStateOf(false)
     }
+
+    //state for showing Approximate Location Rationale UI when user don't allow permission
     var showCoarseLocationRationaleMessage by remember {
         mutableStateOf(false)
     }
@@ -53,21 +52,16 @@ fun LandingLocationUiContent(navController: NavHostController?) {
     val context = LocalContext.current
     val activityContext = LocalContext.current as Activity
 
-    val permission = arrayListOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-    )
-
+    //region launcher for requesting permission and handling all permission allow and deny use cases.
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             when {
-                //getOrDefault work only in Api 24+
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                permissions.getOrElse(Manifest.permission.ACCESS_COARSE_LOCATION) { false } -> {
                     Log.d("TAG", "ACCESS_COARSE_LOCATION: Granted")
                     //Todo Approximate Permission Granted
                 }
 
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                permissions.getOrElse(Manifest.permission.ACCESS_FINE_LOCATION) { false } -> {
                     Log.d("TAG", "ACCESS_FINE_LOCATION: Granted")
                     //Todo Precise Permission Granted
                 }
@@ -80,10 +74,14 @@ fun LandingLocationUiContent(navController: NavHostController?) {
                  * using your app without granting the permission.
                  */
                 ActivityCompat.shouldShowRequestPermissionRationale(activityContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) -> { showCoarseLocationRationaleMessage = true }
+                    Manifest.permission.ACCESS_COARSE_LOCATION) -> {
+                    showCoarseLocationRationaleMessage = true
+                }
 
                 ActivityCompat.shouldShowRequestPermissionRationale(activityContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION) -> { showFineLocationRationaleMessage = true }
+                    Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    showFineLocationRationaleMessage = true
+                }
 
                 else -> {
                     /**
@@ -95,6 +93,7 @@ fun LandingLocationUiContent(navController: NavHostController?) {
                 }
             }
         }
+    //endregion
 
     Column(
         modifier = Modifier
@@ -106,83 +105,135 @@ fun LandingLocationUiContent(navController: NavHostController?) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.location_logo),
-                contentDescription = "location Logo",
-                modifier = Modifier
-                    .size(100.dp, 100.dp)
-                    .background(Color.Transparent),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.size(40.dp))
-            Text(
-                text = "Find Restaurants and shops",
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,
-            )
-            Text(
-                text = "near you!",
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,
-            )
-            Spacer(modifier = Modifier.size(10.dp))
-            Text(text = "By Allowing Location access, you can search for", fontSize = 16.sp)
-            Text(text = "restaurants and shops near you and receive", fontSize = 16.sp)
-            Text(text = "more accurate delivery.", fontSize = 16.sp)
+            LocationImageAndTextContent()
         }
 
         Column(verticalArrangement = Arrangement.Bottom) {
-            Button(modifier = Modifier
-                .fillMaxWidth(),
+            LocationButton(
                 onClick = {
                     requestAndHandleLocationPermission(
                         context = context,
                         launcher = launcher,
                     )
                 },
-                shape = RoundedCornerShape(8.dp)) {
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = "Allow Location Access"
-                )
-            }
+                buttonText = "Allow Location Access",
+            )
             Spacer(modifier = Modifier.size(20.dp))
-            Button(modifier = Modifier
-                .fillMaxWidth(),
-                onClick = {
-                    navController?.navigateAndReplaceStartRoute("post-login")
-                },
-                shape = RoundedCornerShape(8.dp)) {
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = "Enter my location"
-                )
-            }
-            if (showCoarseLocationRationaleMessage) {
-                ShowAlertDialogForRationaleUIContent(
-                    title = "Allow Approximate Location Permission",
-                    message = "Allow Foodpanda to access Approximate location, this lets you see near by places, " +
-                            "You can change this anytime in your device settings.",
-                    permissions = permission.toTypedArray(),
-                    launcher = launcher,
-                    closeDialogCallback = { showCoarseLocationRationaleMessage = false }
-                )
-            }
-            if (showFineLocationRationaleMessage) {
-                ShowAlertDialogForRationaleUIContent(
-                    title = "Allow Precise Location Permission",
-                    message = "Allow Foodpanda to access Precise location, " +
-                            "this will help you to see your current location & share your location with others, " +
-                            "You can change this anytime in your device settings.",
-                    permissions = permission.toTypedArray(),
-                    launcher = launcher,
-                    closeDialogCallback = { showFineLocationRationaleMessage = false }
-                )
+            LocationButton(
+                onClick = { navController?.navigateAndReplaceStartRoute("post-login") },
+                buttonText = "Enter my location",
+            )
+            HandleRationaleUIForLocationPermission(
+                showCoarseLocationRationaleMessage = showCoarseLocationRationaleMessage,
+                showFineLocationRationaleMessage = showFineLocationRationaleMessage,
+                launcher = launcher,
+            ) {
+                if (showCoarseLocationRationaleMessage) showCoarseLocationRationaleMessage = false
+                if (showFineLocationRationaleMessage) showFineLocationRationaleMessage = false
             }
         }
     }
 }
 
+//region Stateless composable for Location UI Content [LocationImageAndTextContent]
+@Composable
+fun LocationImageAndTextContent() {
+    Image(
+        painter = painterResource(id = R.drawable.location_logo),
+        contentDescription = "location Logo",
+        modifier = Modifier
+            .size(100.dp, 100.dp)
+            .background(Color.Transparent),
+        contentScale = ContentScale.Crop
+    )
+    Spacer(modifier = Modifier.size(40.dp))
+    Text(
+        text = "Find Restaurants and shops",
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+    )
+    Text(
+        text = "near you!",
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+    )
+    Spacer(modifier = Modifier.size(10.dp))
+    Text(text = "By Allowing Location access, you can search for", fontSize = 16.sp)
+    Text(text = "restaurants and shops near you and receive", fontSize = 16.sp)
+    Text(text = "more accurate delivery.", fontSize = 16.sp)
+}
+//endregion
+
+//region LocationButton (Allow Location Access) / (Enter my location)
+@Composable
+fun LocationButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    buttonText: String,
+) {
+    Button(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = buttonText
+        )
+    }
+}
+//endregion
+
+//region HandleRationaleUIForLocationPermission
+/**
+ * [HandleRationaleUIForLocationPermission]
+ * function handle the permission should show rationale or not,
+ * if rationale show then alert dialog will show up & then user
+ * can request permission again or cancel.
+ *
+ * @param showCoarseLocationRationaleMessage    Show Approximate Location rationale UI.
+ * @param showFineLocationRationaleMessage      Show Precise Location rationale UI.
+ * @param launcher                              launcher for launch permission request.
+ * @param closeDialog                           Callback for closing dialog when user perform some action on dialog button.
+ * @receiver
+ */
+@Composable
+fun HandleRationaleUIForLocationPermission(
+    showCoarseLocationRationaleMessage: Boolean,
+    showFineLocationRationaleMessage: Boolean,
+    launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+    closeDialog: () -> Unit,
+) {
+    val permission = arrayListOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
+
+    if (showCoarseLocationRationaleMessage) {
+        ShowAlertDialogForRationaleUIContent(
+            title = "Allow Approximate Location Permission",
+            message = "Allow Food panda to access Approximate location, this lets you see near by places, " +
+                    "You can change this anytime in your device settings.",
+            permissions = permission.toTypedArray(),
+            launcher = launcher,
+            closeDialog = closeDialog
+        )
+    }
+    if (showFineLocationRationaleMessage) {
+        ShowAlertDialogForRationaleUIContent(
+            title = "Allow Precise Location Permission",
+            message = "Allow Food panda to access Precise location, " +
+                    "this will help you to see your current location & share your location with others, " +
+                    "You can change this anytime in your device settings.",
+            permissions = permission.toTypedArray(),
+            launcher = launcher,
+            closeDialog = closeDialog,
+        )
+    }
+}
+//endregion
+
+//region ShowAlertDialogForRationaleUIContent
 /**
  * Show alert dialog
  *
@@ -191,7 +242,7 @@ fun LandingLocationUiContent(navController: NavHostController?) {
  * @param message               Message for alert dialog.
  * @param permissions           List of permissions for request.
  * @param launcher              Launcher for request permission when user deny permission .
- * @param closeDialogCallback   Callback when click on dialog action button & perform some operation, then close the dialog.
+ * @param closeDialog           Callback when click on dialog action button & perform some operation, then close the dialog.
  */
 @Composable
 fun ShowAlertDialogForRationaleUIContent(
@@ -200,7 +251,7 @@ fun ShowAlertDialogForRationaleUIContent(
     message: String,
     permissions: Array<String>,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
-    closeDialogCallback: () -> Unit,
+    closeDialog: () -> Unit,
 ) {
     AlertDialog(
         modifier = modifier.fillMaxWidth(),
@@ -219,20 +270,30 @@ fun ShowAlertDialogForRationaleUIContent(
         confirmButton = {
             TextButton(onClick = {
                 launcher.launch(permissions)
-                closeDialogCallback()
+                closeDialog()
             }) {
                 Text("Request")
             }
         },
         dismissButton = {
-            TextButton(onClick = closeDialogCallback) {
+            TextButton(onClick = closeDialog) {
                 Text(text = "Cancel")
             }
         },
         onDismissRequest = {},
     )
 }
+//endregion
 
+//region requestAndHandleLocationPermission
+/**
+ * [requestAndHandleLocationPermission]
+ * This function check if app has already location permission,
+ * if not then request those permission.
+ *
+ * @param context           Context for current state of application.
+ * @param launcher          launcher for launch permission/or show permission dialog.
+ */
 private fun requestAndHandleLocationPermission(
     context: Context,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
@@ -258,9 +319,8 @@ private fun requestAndHandleLocationPermission(
         launcher.launch(permissions.toTypedArray())
     }
 }
+//endregion
 
-
-@RequiresApi(Build.VERSION_CODES.N)
 @Preview(showBackground = true)
 @Composable
 fun PreviewLandingLocation() {

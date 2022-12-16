@@ -20,7 +20,6 @@ import com.fpremake.screens_pre_login.screen_user_location.presentation.UserLoca
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
@@ -33,6 +32,7 @@ fun AppNavHost(
     val scope = rememberCoroutineScope()
     //endregion
 
+    //region Root Navigation Graph
     NavHost(
         modifier = Modifier,
         navController = navController,
@@ -47,8 +47,10 @@ fun AppNavHost(
             scope = scope
         )
     }
+    //endregion
 }
 
+//region onBoardingGraph
 fun NavGraphBuilder.onBoardingGraph(
     navController: NavHostController,
 ) {
@@ -56,7 +58,9 @@ fun NavGraphBuilder.onBoardingGraph(
         LandingLocationScreen(navController)
     }
 }
+//endregion
 
+//region mainApplicationGraph
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun NavGraphBuilder.mainApplicationGraph(
     navController: NavHostController,
@@ -124,4 +128,5 @@ fun NavGraphBuilder.mainApplicationGraph(
         }
     }
 }
+//endregion
 
