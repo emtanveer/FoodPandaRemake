@@ -63,14 +63,14 @@ private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
                 )
             },
             label = { Text(text = "Dashboard",) },
-            selected = currentRoute == "dashboard",
+            selected = currentRoute == "screen_dashboard",
             onClick = {
-                navController?.navigate("dashboard") {
+                navController?.navigate("screen_dashboard") {
                     //Helps in the backstack clearing when navigating
                     //from one screen to other, means no screen will
                     //stack when routing from drawer screen by below code.
                     launchSingleTop = true
-                    popUpTo("dashboard") {
+                    popUpTo("screen_dashboard") {
                         saveState = true
                     }
                 }
@@ -92,14 +92,14 @@ private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
                 )
             },
             label = { Text(text = "Location") },
-            selected = currentRoute == "landing_location",
+            selected = currentRoute == "screen_landing_location",
             onClick = {
-                navController?.navigate("landing_location") {
+                navController?.navigate("screen_landing_location") {
                     //Helps in the backstack clearing when navigating
                     //from one screen to other, means no screen will
                     //stack when routing from drawer screen by below code.
                     launchSingleTop = true
-                    popUpTo("landing_location") {
+                    popUpTo("screen_landing_location") {
                         saveState = true
                     }
                 }
