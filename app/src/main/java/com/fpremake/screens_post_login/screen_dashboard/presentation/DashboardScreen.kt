@@ -17,78 +17,80 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.fpremake.screens_post_login.screen_dashboard.data.User
-import com.fpremake.shared.data.realm.RealmProcessor
+import com.fpremake.shared.Emojis.emojis
+import com.fpremake.shared.data.realm.UserRealmRepository
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 //region Pre-requisite setup for initializing User-Data(i.e. Emoji)
-val emojis = listOf(
-    "🐤", "🐦", "🐔", "🦤", "🕊", "️", "🦆", "🦅", "🪶", "🦩",
-    "🐥", "-", "🐣", "🦉", "🦜", "🦚", "🐧", "🐓", "🦢", "🦃", "🦡",
-    "🦇", "🐻", "🦫", "🦬", "🐈", "‍", "⬛", "🐗", "🐪", "🐈", "🐱",
-    "🐿", "️", "🐄", "🐮", "🦌", "🐕", "🐶", "🐘", "🐑", "🦊", "🦒",
-    "🐐", "🦍", "🦮", "🐹", "🦔", "🦛", "🐎", "🐴", "🦘", "🐨", "🐆",
-    "🦁", "🦙", "🦣", "🐒", "🐵", "🐁", "🐭", "🦧", "🦦", "🐂", "🐼", "🐾",
-    "🐖", "🐷", "🐽", "🐻", "‍", "❄", "️", "🐩", "🐇", "🐰", "🦝", "🐏", "🐀",
-    "🦏", "🐕", "‍", "🦺", "🦨", "🦥", "🐅", "🐯", "🐫", "-", "🦄", "🐃", "🐺", "🦓",
-    "🐳", "🐡", "🐬", "🐟", "🐙", "🦭", "🦈", "🐚", "🐳", "🐠", "🐋", "🌱", "🌵", "🌳", "🌲",
-    "🍂", "🍀", "🌿", "🍃", "🍁", "🌴", "🪴", "🌱", "☘", "️", "🌾", "🐊", "🐊", "🐉", "🐲", "🦎",
-    "🦕", "🐍", "🦖", "-", "🐢"
-)
-
 val users = List(102) { i ->
     User().apply {
-        this.emoji = emojis[i]
+        this.emoji = emojis?.get(i) ?: ""
     }
 }
 //endregion
 
 @Composable
 fun DashboardScreen(navController: NavHostController?) {
-
-    DashboardUIContent(navController = navController, userEmojiList = users)
     val scope = rememberCoroutineScope()
+    DashboardUIContent(navController = navController, userEmojiList = users)
 
-
-    /*
-     LaunchedEffect(key1 = null) {
-         (Dispatchers.Main){
-             delay(1000)
-         }
-         navController?.navigate("screen_user_location") {
- //                launchSingleTop = true
- //                popUpTo("screen_dashboard") {
- //                    saveState = true
- //                }
-         }
-     }
-     */
-
-    //Todo Dummy User data to be stored in DB(Realm)
-    RealmProcessor.createInRealm(User().apply {
-        this.firstName = "Tanveer"
-        this.isComplete = true
-        this.father_id = "110"
-        this.emoji = emojis[3]
-    })
-
-
-    // all items in the realm
-    val items: RealmResults<User>? = RealmProcessor.realmInstance?.query<User>()?.find()
-
-    Log.e("realm", "items: ${items}, size: ${items?.size}")
-
-    //You will face the following exception if you try to close the real:
-    //Java.lang.IllegalStateException: Realm has been closed and is no longer accessible:
-    //data/user/0/com.fpremake/files/FoodPandaRealmConfig
 //    SideEffect {
-//        scope.launch{
-//            delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
-//            RealmProcessor.realmInstance?.close()
-//        }
+//        closeRealmDBConnection(scope)
 //    }
 }
 
+//region Helper methods for Navigation purpose
+private fun handleNavigationAfterDelay() {
+    /*
+    LaunchedEffect(key1 = null) {
+        (Dispatchers.Main){
+            delay(1000)
+        }
+        navController?.navigate("screen_user_location") {
+//                launchSingleTop = true
+//                popUpTo("screen_dashboard") {
+//                    saveState = true
+//                }
+        }
+    }
+    */
+}
+//endregion
+
+//region Helper methods for Realm Operations
+private fun performCreateAndSaveUserInRealmDB(){
+    //User data to be stored in DB(Realm)
+    UserRealmRepository.createOrAddUserInRealm(User().apply {
+        this.firstName = "Sharik"
+        this.isComplete = false
+        this.father_id = "220"
+        this.emoji = emojis?.get(5) ?: ""
+    })
+}
+private fun getAllUsersFromRealmDB(){
+    // all items in the realm
+    val items: RealmResults<User> = UserRealmRepository.realmInstance.query<User>().find()
+
+    items.forEachIndexed { index, user ->
+        Log.e("realm", "user # $index, ${user._id},${user.firstName},${user.father_id},${user.emoji}")
+    }
+}
+private fun closeRealmDBConnection(scope: CoroutineScope){
+    //You will face the following exception if you try to close the real:
+    //Java.lang.IllegalStateException: Realm has been closed and is no longer accessible:
+    //data/user/0/com.fpremake/files/FoodPandaRealmConfig
+    scope.launch{
+            delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
+            UserRealmRepository.realmInstance.close()
+    }
+}
+//endregion
+
+//region UI Content section for Dashboard Screen
 @Composable
 fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<User>?) {
     Surface(
@@ -110,22 +112,22 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
                     fontSize = 24.sp
                 )
             }
-        }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(30.dp),
-                modifier = Modifier.height(200.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(30.dp),
+                    modifier = Modifier.height(200.dp)
+                ) {
 
-                itemsIndexed(userEmojiList!!) { index, item ->
-                    UserEmojiHolder(userEmoji = item.emoji)
+                    itemsIndexed(userEmojiList!!) { index, item ->
+                        UserEmojiHolder(userEmoji = item.emoji)
+                    }
                 }
             }
         }
@@ -138,9 +140,12 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
 private fun UserEmojiHolder(userEmoji: String) {
     Text(text = userEmoji)
 }
+//endregion
 
+//region Compose Preview section
 @Preview(showBackground = true)
 @Composable
 fun PreviewDefaultDashboard() {
     DashboardUIContent(navController = null, userEmojiList = users)
 }
+//endregion

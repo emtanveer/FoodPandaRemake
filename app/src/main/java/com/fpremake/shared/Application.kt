@@ -2,10 +2,7 @@ package com.fpremake.shared
 
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
-import com.fpremake.screens_post_login.screen_dashboard.data.User
-import com.fpremake.shared.data.realm.RealmProcessor
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
+import com.fpremake.shared.data.realm.UserRealmRepository
 
 class Application : MultiDexApplication() {
 
@@ -29,6 +26,6 @@ class Application : MultiDexApplication() {
         MultiDex.install(context)
 
         //Init Realm initialization
-        RealmProcessor.startRealm()
+        UserRealmRepository.realmInstance
     }
 }
