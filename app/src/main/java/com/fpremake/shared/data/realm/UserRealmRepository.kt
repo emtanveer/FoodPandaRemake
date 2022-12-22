@@ -1,5 +1,7 @@
 package com.fpremake.shared.data.realm
 
+import com.fpremake.screens_post_login.screen_dashboard.data.Child
+import com.fpremake.screens_post_login.screen_dashboard.data.Parent
 import com.fpremake.screens_post_login.screen_dashboard.data.User
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -13,7 +15,13 @@ import kotlinx.coroutines.launch
 object UserRealmRepository {
     val realmInstance: Realm by lazy {
         val config = RealmConfiguration
-            .Builder(schema = setOf(User::class)).apply {
+            .Builder(schema =
+            setOf(
+                User::class,
+                Parent::class,
+                Child::class
+            ))
+            .apply {
                 this.schemaVersion(1)
                 this.deleteRealmIfMigrationNeeded()
                 this.name("FoodPandaRealmConfig")
