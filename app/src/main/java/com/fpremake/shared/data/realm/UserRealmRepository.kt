@@ -42,7 +42,7 @@ object UserRealmRepository {
     }
 
     // This is very basic example with making this Object class a generic Realm accessor so you initialize it in very first activity that your app used you can easily keep accessing it from any activity
-    private inline fun <reified T: BaseRealmObject>getFromRealm(id: Int): RealmResults<T>? {
+    inline fun <reified T: BaseRealmObject>getFromRealm(id: Int): RealmResults<T>? {
         return realmInstance.query(T::class, "id == $0", id)?.find()
     }
 

@@ -3,9 +3,12 @@ package com.fpremake.shared
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.fpremake.shared.data.realm.UserRealmRepository
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class Application : MultiDexApplication() {
-
+    private val realmDatabase by lazy { UserRealmRepository.realmInstance }
+    val userRepository by lazy { UserRealmRepository }
     /**
      * Singleton object for [Application] for future references
      */
@@ -26,6 +29,6 @@ class Application : MultiDexApplication() {
         MultiDex.install(context)
 
         //Init Realm initialization
-        UserRealmRepository.realmInstance
+        //UserRealmRepository.realmInstance
     }
 }

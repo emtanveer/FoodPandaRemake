@@ -8,6 +8,7 @@ import com.fpremake.navigation.AppNavHost
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             //Todo Setup our Navigation(i.e. navHost) here.
             AppNavHost()

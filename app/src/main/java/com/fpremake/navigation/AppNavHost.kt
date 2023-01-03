@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,8 +16,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreen
+import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
 import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.screens_pre_login.screen_user_location.presentation.UserLocationScreen
+import com.fpremake.shared.viewmodel.base.FPRemakeViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -97,7 +100,14 @@ fun NavGraphBuilder.mainApplicationGraph(
                     })
                 },
             ) {
-                DashboardScreen(navController)
+                //var userRepository: UserRealmRepository
+                // Here we instantiate our ViewModel leveraging delegates and
+                // a trailing lambda
+                val dashboardViewModel: DashboardScreenViewModel = viewModel(
+                    factory = FPRemakeViewModelFactory()
+                )
+
+                DashboardScreen(dashboardViewModel,navController)
             }
         }
 
