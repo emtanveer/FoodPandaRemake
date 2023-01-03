@@ -6,6 +6,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -20,10 +21,12 @@ import com.fpremake.shared.Emojis.emojis
 import com.fpremake.shared.data.realm.UserRealmRepository
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.notifications.DeletedObject
+import io.realm.kotlin.notifications.InitialResults
+import io.realm.kotlin.notifications.UpdatedObject
+import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.RealmResults
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 //region Pre-requisite setup for initializing User-Data(i.e. Emoji)
 val users = List(102) { i ->
@@ -132,7 +135,6 @@ private fun getChildByParentName() {
     }
 }
 
-
 private fun closeRealmDBConnection(scope: CoroutineScope) {
     //You will face the following exception if you try to close the real:
     //Java.lang.IllegalStateException: Realm has been closed and is no longer accessible:
@@ -147,6 +149,43 @@ private fun closeRealmDBConnection(scope: CoroutineScope) {
 //region UI Content section for Dashboard Screen
 @Composable
 fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<User>?) {
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = null) {
+        // fetch all objects of a type as a flow, asynchronously
+        val users = UserRealmRepository.realmInstance.query<User>().asFlow()
+        users.collect { results ->
+            Log.d("Collecting Flow", "")
+            when (results) {
+                // print out initial results
+                is InitialResults -> {
+                    for (item in results.list) {
+                        Log.d("InitialResults", "firstName ${item.firstName}")
+                    }
+                }
+                is UpdatedResults -> {
+                    Log.d("UpdatedResults", "insertions ${results.insertions.size}")
+                    Log.d("UpdatedResults", "insertionRanges ${results.insertionRanges.size}")
+                    Log.d("UpdatedResults", "changes ${results.changes.size}")
+                    Log.d("UpdatedResults", "changeRanges ${results.changeRanges.size}")
+                    Log.d("UpdatedResults", "deletions ${results.deletions.size}")          //FIFO
+                    Log.d("UpdatedResults", "deletionRanges.size ${results.deletionRanges.size}")
+                }
+                /*is UpdatedObject<*> -> {
+                    Log.d("UpdatedObject", "changedFields ${results.changedFields}")
+                    Log.d("UpdatedObject", "obj ${results.obj}")
+                    Log.d("UpdatedObject", "isFieldChanged ${results.isFieldChanged("firstName")}")
+                }
+                is DeletedObject<*> -> {
+                    Log.d("DeletedObject", "obj ${results.obj}")
+                }*/
+                else -> {
+                    // do nothing on changes
+                }
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -219,6 +258,41 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
                 }
             }) {
                 Text(text = "Get Parent by child")
+            }
+
+            //Delete All User
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>().find().also { delete(it) }
+                    }
+                }
+            }) {
+                Text(text = "Delete All User")
+            }
+
+            //Delete User whose firstName contain Sharik
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>("firstName == 'Sharik'").first().find()?.also { delete(it) }
+                    }
+                }
+            }) {
+                Text(text = "Delete User by Name")
+            }
+
+            //Update User Sharik firstName to Kama
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>("firstName == 'Sharik'").first().find()?.also { user ->
+                            user.firstName = "Kama"
+                        }
+                    }
+                }
+            }) {
+                Text(text = "Update User Name")
             }
         }
     }
