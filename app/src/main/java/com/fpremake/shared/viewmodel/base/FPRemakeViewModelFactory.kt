@@ -4,7 +4,7 @@ import androidx.collection.ArrayMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
-import com.fpremake.shared.Application
+import com.fpremake.shared.FPRemakeApplication
 import com.fpremake.shared.data.realm.UserRealmRepository
 
 import java.util.concurrent.Callable
@@ -35,7 +35,7 @@ class FPRemakeViewModelFactory() : ViewModelProvider.Factory {
         {
             //2nd Parameter idher set horaha hai(i.e. Callable<out ViewModel>)
             //a.k.a modelClass
-            DashboardScreenViewModel(application = Application.getInstance(), userRepository)
+            DashboardScreenViewModel(application = FPRemakeApplication.getInstance(), userRepository)
         }
     }
 

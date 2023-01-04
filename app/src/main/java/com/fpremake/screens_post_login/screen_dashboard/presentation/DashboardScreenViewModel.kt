@@ -8,19 +8,21 @@ import com.fpremake.screens_post_login.screen_dashboard.data.Parent
 import com.fpremake.screens_post_login.screen_dashboard.data.User
 import com.fpremake.shared.Emojis
 import com.fpremake.shared.data.realm.UserRealmRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.types.BaseRealmObject
 import io.realm.kotlin.types.RealmObject
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-
-class DashboardScreenViewModel(
+@HiltViewModel
+class DashboardScreenViewModel @Inject constructor(
     application: Context,
     private val userRepository: UserRealmRepository? = null
 ) :
-    AndroidViewModel(application as com.fpremake.shared.Application) {
+    AndroidViewModel(application as com.fpremake.shared.FPRemakeApplication) {
 
     //region Helper methods for Realm Operations
     fun performCreateAndSaveUserInRealmDB() {

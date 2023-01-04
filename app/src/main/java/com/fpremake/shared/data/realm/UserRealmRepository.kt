@@ -11,23 +11,27 @@ import io.realm.kotlin.types.RealmObject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 object UserRealmRepository {
-    val realmInstance: Realm by lazy {
-        val config = RealmConfiguration
-            .Builder(schema =
-            setOf(
-                User::class,
-                Parent::class,
-                Child::class
-            ))
-            .apply {
-                this.schemaVersion(1)
-                this.deleteRealmIfMigrationNeeded()
-                this.name("FoodPandaRealmConfig")
-            }
-        Realm.open(config.build())
-    }
+    @Inject
+    lateinit var realmInstance: Realm
+
+//    by lazy {
+//        val config = RealmConfiguration
+//            .Builder(schema =
+//            setOf(
+//                User::class,
+//                Parent::class,
+//                Child::class
+//            ))
+//            .apply {
+//                this.schemaVersion(1)
+//                this.deleteRealmIfMigrationNeeded()
+//                this.name("FoodPandaRealmConfig")
+//            }
+//        Realm.open(config.build())
+//    }
 
     // Since the threads has to be same for write operations which we used for opening Realm making it singleton with one dispatcher.
     @OptIn(DelicateCoroutinesApi::class)

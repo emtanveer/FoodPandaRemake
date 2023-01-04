@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -100,14 +101,8 @@ fun NavGraphBuilder.mainApplicationGraph(
                     })
                 },
             ) {
-                //var userRepository: UserRealmRepository
-                // Here we instantiate our ViewModel leveraging delegates and
-                // a trailing lambda
-                val dashboardViewModel: DashboardScreenViewModel = viewModel(
-                    factory = FPRemakeViewModelFactory()
-                )
 
-                DashboardScreen(dashboardViewModel,navController)
+                DashboardScreen(getDashboardScreenViewModel(),navController)
             }
         }
 
@@ -137,6 +132,20 @@ fun NavGraphBuilder.mainApplicationGraph(
             }
         }
     }
+}
+
+@Composable
+private fun getDashboardScreenViewModel() : DashboardScreenViewModel {
+    //var userRepository: UserRealmRepository
+    // Here we instantiate our ViewModel leveraging delegates and
+    // a trailing lambda
+
+//    val dashboardViewModel: DashboardScreenViewModel = viewModel(
+//        factory = FPRemakeViewModelFactory()
+//    )
+
+    val dashboardViewModel = hiltViewModel<DashboardScreenViewModel>()
+    return dashboardViewModel
 }
 //endregion
 

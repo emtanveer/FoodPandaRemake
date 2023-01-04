@@ -140,16 +140,25 @@ final networkDependencies = [
 ]
 
 final hiltInjection = [
-        hilt                  : "com.google.dagger:hilt-android:$hilt_version",
-        hiltNavigationFragment: "androidx.hilt:hilt-navigation-fragment:1.0.0"
+        hilt                  : "com.google.dagger:hilt-android:2.38.1",
+        hiltNavigationFragment: "androidx.hilt:hilt-navigation-fragment:1.0.0",
+        //Compose
+        composeHiltNavigation: "androidx.hilt:hilt-navigation-compose:1.0.0"
+
 ]
 
 final compileDependencies = [
-        dIHilt           : "com.google.dagger:hilt-android-compiler:2.38.1",
         //Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component,
         //such as activities and fragments. These components help you produce better-organized, and often lighter-weight code,
         //that is easier to maintain.
-        lifecycleCompiler: "androidx.lifecycle:lifecycle-compiler:2.3.1"
+        lifecycleCompiler: "androidx.lifecycle:lifecycle-compiler:2.3.1",
+        dIHilt           : "com.google.dagger:hilt-android-compiler:2.38.1",
+        kapt             : 'androidx.hilt:hilt-compiler:1.0.0'
+
+]
+
+final hiltKaptDependencies =[
+
 ]
 
 final supportDependencies = [
@@ -207,8 +216,8 @@ dependencies {
     implementation hiltInjection.values()
 
     //annotationProcessor Compilers Dependencies
-//    annotationProcessor compileDependencies.values()
-    kapt compileDependencies.values()
+    annotationProcessor compileDependencies.values()
+    //kapt hiltKaptDependencies.values()
 
     implementation supportDependencies.values()
 }
