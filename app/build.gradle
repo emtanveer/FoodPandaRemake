@@ -151,6 +151,13 @@ final offlineDatabaseDependencies = [
         // Room components
         roomKTX           : "androidx.room:room-ktx:${roomVersion}"
 
+final compileDependencies = [
+       // dIHilt           : "com.google.dagger:hilt-android-compiler:2.38.1",
+       // hiltKapt         : "androidx.hilt:hilt-compiler:1.0.0",
+        //Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component,
+        //such as activities and fragments. These components help you produce better-organized, and often lighter-weight code,
+        //that is easier to maintain.
+        lifecycleCompiler: "androidx.lifecycle:lifecycle-compiler:2.3.1"
 ]
 
 final supportDependencies = [
@@ -230,11 +237,15 @@ dependencies {
     //All required Compose Library
     implementation composeDependencies.values()
 
+    //Compose Debug Purpose Libs
+    debugImplementation debugComposeDependencies.values()
+
     //Navigation Architecture Library
     implementation navigationArchitectureDependencies.values()
 
     // Glide - Image loading
     implementation googleGlide.values()
+    annotationProcessor annotationProcessorDependencies.values()
 
     //Retrofit
     implementation networkDependencies.values()

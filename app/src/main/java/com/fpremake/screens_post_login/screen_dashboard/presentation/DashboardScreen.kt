@@ -18,6 +18,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 import com.fpremake.shared.Emojis.emojis
+import com.fpremake.shared.data.realm.UserRealmRepository
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.notifications.InitialResults
 import io.realm.kotlin.notifications.UpdatedResults
 import kotlinx.coroutines.launch

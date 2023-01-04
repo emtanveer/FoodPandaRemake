@@ -9,6 +9,7 @@ import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 import com.fpremake.shared.Emojis
 import com.fpremake.shared.FPRemakeApplication
 import com.fpremake.shared.data.realm.UserRealmRepositoryImpl
+import com.fpremake.shared.data.realm.UserRealmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
