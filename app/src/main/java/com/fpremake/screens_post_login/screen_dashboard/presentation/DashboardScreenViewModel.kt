@@ -3,6 +3,9 @@ package com.fpremake.screens_post_login.screen_dashboard.presentation
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.fpremake.shared.Emojis
+import com.fpremake.shared.FPRemakeApplication
+import com.fpremake.shared.data.realm.UserRealmRepository
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.Child
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.Parent
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.User

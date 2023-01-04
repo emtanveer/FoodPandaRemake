@@ -20,7 +20,6 @@ import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardSc
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
 import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.screens_pre_login.screen_user_location.presentation.UserLocationScreen
-import com.fpremake.shared.viewmodel.base.FPRemakeViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
