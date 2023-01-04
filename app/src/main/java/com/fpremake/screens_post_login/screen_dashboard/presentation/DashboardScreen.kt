@@ -13,15 +13,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.fpremake.screens_post_login.screen_dashboard.data.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.User
 import com.fpremake.shared.Emojis.emojis
 import com.fpremake.shared.data.realm.UserRealmRepository
+import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.notifications.InitialResults
 import io.realm.kotlin.notifications.UpdatedResults
 import kotlinx.coroutines.launch
+import io.realm.kotlin.query.RealmResults
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
 //region Pre-requisite setup for initializing User-Data(i.e. Emoji)
 val users = List(102) { i ->
@@ -33,12 +37,9 @@ val users = List(102) { i ->
 
 
 @Composable
-fun DashboardScreen(
-    dashboardScreenViewModel: DashboardScreenViewModel,
-    navController: NavHostController?
-) {
+fun DashboardScreen(navController: NavHostController?, viewModel: DashboardScreenViewModel) {
     val scope = rememberCoroutineScope()
-    DashboardUIContent(dashboardScreenViewModel = dashboardScreenViewModel, navController = navController, userEmojiList = users)
+    DashboardUIContent(navController = navController, userEmojiList = users, viewModel = viewModel)
 
 //    SideEffect {
 //        closeRealmDBConnection(scope)
@@ -65,13 +66,12 @@ private fun handleNavigationAfterDelay() {
 
 //region UI Content section for Dashboard Screen
 @Composable
-fun DashboardUIContent(dashboardScreenViewModel: DashboardScreenViewModel?, navController: NavHostController?, userEmojiList: List<User>?) {
-
+fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<User>?, viewModel: DashboardScreenViewModel) {
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = null) {
         // fetch all objects of a type as a flow, asynchronously
-        val users = UserRealmRepository.realmInstance.query<User>().asFlow()
-        users.collect { results ->
+        //val users = UserRealmRepository.realmInstance.query<User>().asFlow()
+        viewModel.users.collect { results ->
             Log.d("Collecting Flow", "")
             when (results) {
                 // print out initial results
@@ -124,83 +124,75 @@ fun DashboardUIContent(dashboardScreenViewModel: DashboardScreenViewModel?, navC
             }
 
             Button(onClick = {
-                dashboardScreenViewModel?.getAllUsersFromRealmDB()
+                viewModel.getAllUsersFromRealmDB()
             }) {
-                Text(text = "Get All User")
+                Text(text = "Get Users")
             }
             Button(onClick = {
-                dashboardScreenViewModel?.performCreateAndSaveUserInRealmDB()
+                viewModel.getAllParentFromRealmDB()
+            }) {
+                Text(text = "Get Parents")
+            }
+            Button(onClick = {
+                viewModel.performCreateAndSaveUserInRealmDB()
             }) {
                 Text(text = "Create User")
             }
             Button(onClick = {
-               // getUserByNameFromRealmDB()
+                viewModel.getUserByNameFromRealmDB()
             }) {
                 Text(text = "Get User by name")
             }
             Button(onClick = {
-               // createParent()
+                viewModel.createParent()
             }) {
                 Text(text = "Create Parent ")
             }
             Button(onClick = {
-               // getChildByParentName()
+                viewModel.getChildByParentName()
             }) {
                 Text(text = "Get Parents Child only")
             }
             Button(onClick = {
-                val childs =
-                    UserRealmRepository.realmInstance.query<Child>("parent.pName == 'Sharik'")
-                        .find()
-                childs.forEachIndexed { index, child ->
-                    Log.e("realm", "parent # $index, ${child.id},${child.name}}")
-                }
+               viewModel.getParentByChild()
             }) {
                 Text(text = "Get Parent by child")
             }
 
+            //Delete All Parent
+            Button(onClick = {
+                viewModel.deleteAllParents()
+            }) {
+                Text(text = "Delete All Parent")
+            }
+
             //Delete All User
             Button(onClick = {
-                scope.launch {
-                    UserRealmRepository.realmInstance.write {
-                        query<User>().find().also { delete(it) }
-                    }
-                }
+               viewModel.deleteAllUsers()
             }) {
                 Text(text = "Delete All User")
             }
 
             //Delete User whose firstName contain Sharik
             Button(onClick = {
-                scope.launch {
-                    UserRealmRepository.realmInstance.write {
-                        query<User>("firstName == 'Sharik'").first().find()?.also { delete(it) }
-                    }
-                }
+                viewModel.deleteUserByname()
             }) {
                 Text(text = "Delete User by Name")
             }
 
             //Update User Sharik firstName to Kama
             Button(onClick = {
-                scope.launch {
-                    UserRealmRepository.realmInstance.write {
-                        query<User>("firstName == 'Sharik'").first().find()?.also { user ->
-                            user.firstName = "Kama"
-                        }
-                    }
-                }
+                viewModel.updateUserName()
             }) {
                 Text(text = "Update User Name")
             }
         }
     }
 
-
 }
 
 @Composable
-private fun UserEmojiHolder(userEmoji: String) {
+fun UserEmojiHolder(userEmoji: String) {
     Text(text = userEmoji)
 }
 //endregion
@@ -209,6 +201,6 @@ private fun UserEmojiHolder(userEmoji: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDefaultDashboard() {
-    DashboardUIContent(dashboardScreenViewModel = null, navController = null, userEmojiList = users)
+    DashboardUIContent(navController = null, userEmojiList = users, viewModel = viewModel())
 }
 //endregion

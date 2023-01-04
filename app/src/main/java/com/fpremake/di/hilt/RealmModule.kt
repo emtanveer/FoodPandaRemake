@@ -11,8 +11,8 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object RealmModule {
 
     @Provides
@@ -23,7 +23,7 @@ object RealmModule {
 
     @Provides
     @Singleton
-    fun provideRealmInstance(): RealmConfiguration {
+    fun provideRealmConfig(): RealmConfiguration {
         val config = RealmConfiguration.Builder(
             schema =
             setOf(

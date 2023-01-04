@@ -6,8 +6,7 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class FPRemakeApplication : MultiDexApplication() {
-//    private val realmDatabase by lazy { UserRealmRepository.realmInstance }
-//    val userRepository by lazy { UserRealmRepository }
+
     /**
      * Singleton object for [FPRemakeApplication] for future references
      */

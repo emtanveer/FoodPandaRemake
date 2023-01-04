@@ -4,9 +4,7 @@ import androidx.collection.ArrayMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
-import com.fpremake.shared.FPRemakeApplication
 import com.fpremake.shared.data.realm.UserRealmRepository
-
 import java.util.concurrent.Callable
 import javax.inject.Singleton
 
@@ -19,11 +17,10 @@ import javax.inject.Singleton
 class FPRemakeViewModelFactory() : ViewModelProvider.Factory {
 
     private val creators: ArrayMap<Class<*>, Callable<out ViewModel>> = ArrayMap()
-
-    val realmDB = UserRealmRepository.realmInstance
-
     //User Repository for user related operation.
-    private var userRepository: UserRealmRepository = UserRealmRepository
+    private var userRepository: UserRealmRepository = UserRealmRepository()
+
+    val realmDB = userRepository.realmInstance
 
     /**
      *  ViewModels cannot be injected directly because they won't be bound to the owner's view model scope.
@@ -35,7 +32,7 @@ class FPRemakeViewModelFactory() : ViewModelProvider.Factory {
         {
             //2nd Parameter idher set horaha hai(i.e. Callable<out ViewModel>)
             //a.k.a modelClass
-            DashboardScreenViewModel(application = FPRemakeApplication.getInstance(), userRepository)
+            DashboardScreenViewModel(userRepository = userRepository)
         }
     }
 

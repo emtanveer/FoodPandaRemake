@@ -1,10 +1,6 @@
 package com.fpremake.shared.data.realm
 
-import com.fpremake.screens_post_login.screen_dashboard.data.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.User
 import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.types.BaseRealmObject
 import io.realm.kotlin.types.RealmObject
@@ -12,8 +8,10 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-object UserRealmRepository {
+@Singleton
+class UserRealmRepository @Inject constructor(){
     @Inject
     lateinit var realmInstance: Realm
 
@@ -46,8 +44,8 @@ object UserRealmRepository {
     }
 
     // This is very basic example with making this Object class a generic Realm accessor so you initialize it in very first activity that your app used you can easily keep accessing it from any activity
-    inline fun <reified T: BaseRealmObject>getFromRealm(id: Int): RealmResults<T>? {
-        return realmInstance.query(T::class, "id == $0", id)?.find()
+    private inline fun <reified T: BaseRealmObject>getFromRealm(id: Int): RealmResults<T> {
+        return realmInstance.query(T::class, "id == $0", id).find()
     }
 
     fun <T: RealmObject>createOrAddUserInRealm(objectToCopyRealm: T) {
