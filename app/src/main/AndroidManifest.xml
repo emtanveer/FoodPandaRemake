@@ -42,6 +42,14 @@
                 android:value="" />
         </activity>
 
+        <!--For Real Testing Purpose, Initiated an empty Class-->
+        <activity android:name=".test.RealmTestApplicationClass"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GMS_KEY}" />
