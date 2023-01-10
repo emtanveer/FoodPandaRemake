@@ -5,6 +5,7 @@ buildscript {
         retrofit_version = '2.9.0'
         hilt_version = '2.38.1'
         ok_http_version = '4.9.1'
+        mockK_version = '1.13.3'
     }
 
     repositories {

@@ -79,7 +79,10 @@ final AndroidDevelopmentCoreDependencies = [
 ]
 
 final testJUnitDependencies = [
-        jUnit: 'junit:junit:4.13.2'
+        jUnit                       : 'junit:junit:4.13.2',
+
+        mockKUnitTest               : "io.mockk:mockk:${mockK_version}",
+        mockKAndroidInstrumentedTest: "io.mockk:mockk-android:${mockK_version}"
 ]
 
 final androidTestDependencies = [
@@ -155,8 +158,8 @@ final kaptCompileDependencies = [
 ]
 
 final compileDependencies = [
-       // dIHilt           : "com.google.dagger:hilt-android-compiler:2.38.1",
-       // hiltKapt         : "androidx.hilt:hilt-compiler:1.0.0",
+        // dIHilt           : "com.google.dagger:hilt-android-compiler:2.38.1",
+        // hiltKapt         : "androidx.hilt:hilt-compiler:1.0.0",
         //Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component,
         //such as activities and fragments. These components help you produce better-organized, and often lighter-weight code,
         //that is easier to maintain.
@@ -183,9 +186,9 @@ final supportDependencies = [
         composeGoogleMapWidgets: 'com.google.maps.android:maps-compose-widgets:2.7.3',
 
         //Realm
-        realmSdkCoroutines :'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt',
-        realmLibrary :'io.realm.kotlin:library-base:1.4.0',
-        realmSyncLibrary :'io.realm.kotlin:library-sync:1.4.0'
+        realmSdkCoroutines     : 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt',
+        realmLibrary           : 'io.realm.kotlin:library-base:1.4.0',
+        realmSyncLibrary       : 'io.realm.kotlin:library-sync:1.4.0'
 ]
 //endregion
 
