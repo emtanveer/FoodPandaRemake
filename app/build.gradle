@@ -184,7 +184,8 @@ final supportDependencies = [
 
         //Realm
         realmSdkCoroutines :'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt',
-        realmLibrary :'io.realm.kotlin:library-base:1.4.0'
+        realmLibrary :'io.realm.kotlin:library-base:1.4.0',
+        realmSyncLibrary :'io.realm.kotlin:library-sync:1.4.0'
 ]
 //endregion
 

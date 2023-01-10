@@ -11,12 +11,19 @@ import com.fpremake.shared.Emojis
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.AppConfiguration
+import io.realm.kotlin.mongodb.Credentials
 import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.query.RealmSingleQuery
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 class InsertAnUserAfterAuthentication : RealmTesting() {
-
+    private val appId = "fpremakeapp-jocbl"
     @Test
     fun authenticateUserAndSaveUserInformationToRealmDataBase() {
         val expectation = Expectation()
@@ -25,6 +32,11 @@ class InsertAnUserAfterAuthentication : RealmTesting() {
         activity!!.runOnUiThread {
             val realm = Realm.open(getRealmConfig())
 
+            val app = App.create(AppConfiguration.Builder(appId).build())
+            runBlocking {
+                val user = app.login(Credentials.anonymous())
+                Log.d("User","Successfully logged in ${user.id}")
+            }
             // :snippet-start:
             try {
                 realm.writeBlocking {
