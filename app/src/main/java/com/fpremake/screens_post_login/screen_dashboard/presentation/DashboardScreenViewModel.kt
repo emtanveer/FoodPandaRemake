@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.fpremake.shared.Emojis
 import com.fpremake.shared.FPRemakeApplication
 import com.fpremake.shared.data.realm.UserRealmRepository
+import com.fpremake.shared.data.realm.UserRealmRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
@@ -23,15 +24,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardScreenViewModel @Inject constructor(
-    val userRepository: UserRealmRepository
+    val userRepositoryImpl: UserRealmRepositoryImpl
 ) : AndroidViewModel(FPRemakeApplication.getInstance()) {
 
-    val users = userRepository.realmInstance.query<User>().asFlow()
+    val users = userRepositoryImpl.realmInstance.query<User>().asFlow()
 
     //region Helper methods for Realm Operations
     fun performCreateAndSaveUserInRealmDB() {
         //User data to be stored in DB(Realm)
-        userRepository.createOrAddUserInRealm(User().apply {
+        userRepositoryImpl.createOrAddUserInRealm(User().apply {
             this.firstName = "Sharik"
             this.isComplete = true
             this.father_id = "2201"
@@ -41,7 +42,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun getAllUsersFromRealmDB() {
         // all items in the realm
-        val items: RealmResults<User> = userRepository.realmInstance.query<User>().find()
+        val items: RealmResults<User> = userRepositoryImpl.realmInstance.query<User>().find()
 
         items.forEachIndexed { index, user ->
             Log.e(
@@ -53,7 +54,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun getAllParentFromRealmDB() {
         // all items in the realm
-        val parents: RealmResults<Parent> = userRepository.realmInstance.query<Parent>().find()
+        val parents: RealmResults<Parent> = userRepositoryImpl.realmInstance.query<Parent>().find()
 
         parents.forEachIndexed { index, parent ->
             Log.e(
@@ -66,7 +67,7 @@ class DashboardScreenViewModel @Inject constructor(
     fun getUserByNameFromRealmDB() {
         // all items in the realm
         val items: RealmResults<User> =
-            userRepository.realmInstance.query<User>("firstName == 'Sharik'").find()
+            userRepositoryImpl.realmInstance.query<User>("firstName == 'Sharik'").find()
 
         items.forEachIndexed { index, user ->
             Log.e(
@@ -78,7 +79,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun createParent() {
         // all items in the realm
-        userRepository.realmInstance.writeBlocking {
+        userRepositoryImpl.realmInstance.writeBlocking {
             val parent = Parent().apply { pName = "Sharik" }
 
             val child1 = Child().apply {
@@ -104,7 +105,7 @@ class DashboardScreenViewModel @Inject constructor(
     }
 
     fun getChildByParentName() {
-        val parents = userRepository.realmInstance.query<Parent>("pName == 'Sharik'").find()
+        val parents = userRepositoryImpl.realmInstance.query<Parent>("pName == 'Sharik'").find()
         parents.forEachIndexed { index, parent ->
             Log.e("realm", "parent # $index, ${parent.id},${parent.pName}} ${parent.childs}")
         }
@@ -112,7 +113,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun getParentByChild() {
         val childs =
-            userRepository.realmInstance.query<Child>("parent.pName == 'Sharik'")
+            userRepositoryImpl.realmInstance.query<Child>("parent.pName == 'Sharik'")
                 .find()
         childs.forEachIndexed { index, child ->
             Log.e("realm", "parent # $index, ${child.id},${child.name}}")
@@ -121,7 +122,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun deleteAllParents() {
         viewModelScope.launch {
-            userRepository.realmInstance.write {
+            userRepositoryImpl.realmInstance.write {
                 query<Parent>().find().also { delete(it) }
             }
         }
@@ -129,7 +130,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun deleteAllUsers() {
         viewModelScope.launch {
-            userRepository.realmInstance.write {
+            userRepositoryImpl.realmInstance.write {
                 query<User>().find().also { delete(it) }
             }
         }
@@ -137,7 +138,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun deleteUserByname() {
         viewModelScope.launch {
-            userRepository.realmInstance.write {
+            userRepositoryImpl.realmInstance.write {
                 query<User>("firstName == 'Sharik'").first().find()?.also { delete(it) }
             }
         }
@@ -145,7 +146,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun updateUserName() {
         viewModelScope.launch {
-            userRepository.realmInstance.write {
+            userRepositoryImpl.realmInstance.write {
                 query<User>("firstName == 'Sharik'").first().find()?.also { user ->
                     user.firstName = "Kama"
                 }
@@ -159,7 +160,7 @@ class DashboardScreenViewModel @Inject constructor(
         //data/user/0/com.fpremake/files/FoodPandaRealmConfig
         scope.launch {
             delay(2000L) // non-blocking delay for 1 second (default time unit is ms)
-            userRepository.realmInstance.close()
+            userRepositoryImpl.realmInstance.close()
         }
     }
 //endregion

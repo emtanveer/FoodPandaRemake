@@ -82,7 +82,9 @@ final testJUnitDependencies = [
         jUnit                       : 'junit:junit:4.13.2',
 
         mockKUnitTest               : "io.mockk:mockk:${mockK_version}",
-        mockKAndroidInstrumentedTest: "io.mockk:mockk-android:${mockK_version}"
+        mockKAndroidInstrumentedTest: "io.mockk:mockk-android:${mockK_version}",
+
+        robo : "org.robolectric:robolectric:4.1"
 ]
 
 final androidTestDependencies = [
@@ -189,6 +191,8 @@ final supportDependencies = [
         realmSdkCoroutines     : 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt',
         realmLibrary           : 'io.realm.kotlin:library-base:1.4.0',
         realmSyncLibrary       : 'io.realm.kotlin:library-sync:1.4.0'
+
+
 ]
 //endregion
 
@@ -196,6 +200,7 @@ dependencies {
 
     implementation AndroidDevelopmentCoreDependencies.values()
     testImplementation testJUnitDependencies.values()
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     androidTestImplementation androidTestDependencies.values()
 
