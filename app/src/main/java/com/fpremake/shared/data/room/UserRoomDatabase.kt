@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fpremake.screens_post_login.screen_dashboard.data.room.User
+import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
+import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
 
-@Database(entities = arrayOf(User::class), version = 1, exportSchema = true)
+@Database(entities = [Child::class, Parent::class], version = 3, exportSchema = true)
 abstract class UserRoomDatabase : RoomDatabase() {
 
-    abstract fun getUserDao(): UserDao
+    abstract fun getUserDao(): ChildDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
