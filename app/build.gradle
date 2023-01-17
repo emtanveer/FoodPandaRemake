@@ -78,6 +78,14 @@ final AndroidDevelopmentCoreDependencies = [
 
 ]
 
+final testJUnitDependencies = [
+        jUnit                       : 'junit:junit:4.13.2',
+
+        mockKUnitTest               : "io.mockk:mockk:${mockK_version}",
+        mockKAndroidInstrumentedTest: "io.mockk:mockk-android:${mockK_version}",
+
+        robo : "org.robolectric:robolectric:4.1"
+]
 
 final lifeCycleDependencies = [
         navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.5.3',
@@ -139,6 +147,7 @@ final hiltInjection = [
         //Compose
         hiltComposeNavigation : "androidx.hilt:hilt-navigation-compose:1.0.0"
 ]
+
 
 
 final offlineDatabaseDependencies = [
@@ -232,7 +241,6 @@ dependencies {
 
     // Glide - Image loading
     implementation googleGlide.values()
-    annotationProcessor annotationProcessorDependencies.values()
 
     //Retrofit
     implementation networkDependencies.values()
