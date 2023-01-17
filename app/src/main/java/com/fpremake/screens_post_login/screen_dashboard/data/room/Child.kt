@@ -1,16 +1,33 @@
 package com.fpremake.screens_post_login.screen_dashboard.data.room
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 
-@Entity(tableName = "child")
+@Entity(
+    tableName = "child",
+    foreignKeys = [
+        ForeignKey(
+            entity = Parent::class,
+            parentColumns = ["parentId"],
+            childColumns = ["id_fkparent"],
+            onDelete = CASCADE,
+            onUpdate = CASCADE
+        )
+    ]
+)
 class Child(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id: Long = 0,
+    @ColumnInfo(name = "childId")
+    var childId: Long = 0,
     @ColumnInfo(name = "firstName") val firstName: String? = "",
-    @ColumnInfo(name = "parentId") var parentId: Long? = 0,
+//    @ForeignKey(
+//        Parent::class.java,
+//        parentColumns = "id",
+//        childColumns = "parentId",
+//        onDelete = CASCADE
+//    )
+    @ColumnInfo(name = "id_fkparent", index = true)
+    var id_fkparent: Long? = 0,
 )
 
 

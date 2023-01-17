@@ -5,10 +5,12 @@ import androidx.room.Entity
 import androidx.room.Relation
 
 data class ParentWithChildren(
-    @Embedded val parent: Parent,
+
+    @Embedded
+    var parent: Parent,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "parentId"
+        parentColumn = "parentId",
+        entityColumn = "id_fkparent"
     )
-    val child: List<Child>,
+    val children: List<Child>,
 )
