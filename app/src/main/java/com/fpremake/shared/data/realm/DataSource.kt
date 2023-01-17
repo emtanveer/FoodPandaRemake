@@ -1,6 +1,6 @@
 package com.fpremake.shared.data.realm
 
-import com.fpremake.screens_post_login.screen_dashboard.data.User
+import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 import javax.inject.Inject
 
 

@@ -2,13 +2,7 @@ package com.fpremake
 
 import android.app.Activity
 import androidx.test.core.app.ActivityScenario
-import com.fpremake.screens_post_login.screen_dashboard.data.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.User
-import com.fpremake.shared.presentation.MainActivity
 import com.fpremake.test.RealmTestApplicationClass
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
 import org.junit.Assert
 import org.junit.Before
 import java.util.concurrent.atomic.AtomicBoolean

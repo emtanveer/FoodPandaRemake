@@ -1,6 +1,6 @@
 //package com.fpremake.shared.data.realm
 //
-//import com.fpremake.screens_post_login.screen_dashboard.data.User
+//import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 //import io.realm.kotlin.Realm
 //import io.realm.kotlin.RealmConfiguration
 //
