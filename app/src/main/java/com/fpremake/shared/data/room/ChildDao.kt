@@ -21,11 +21,11 @@ interface ChildDao {
     @Query("SELECT * FROM child")
     suspend fun getAllChilds(): List<Child>
 
-    @Query("Insert INTO parent (name) VALUES (:name, :child)")
-    suspend fun insetChildIntoParent(name: String, child: Child)
-
-    @Query("Select * FROM parent")
-    suspend fun getChildFromParent(): List<Parent>
+//    @Query("Insert INTO parent (name) VALUES (:name, :child)")
+//    suspend fun insertChildIntoParent(name: String, child: Child)
+//
+//    @Query("Select * FROM parent")
+//    suspend fun getChildFromParent(): List<Parent>
 
 
     //region one-to-many relationship test cases
