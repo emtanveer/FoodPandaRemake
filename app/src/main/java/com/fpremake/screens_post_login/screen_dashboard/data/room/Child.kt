@@ -18,16 +18,10 @@ import androidx.room.ForeignKey.CASCADE
 class Child(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "childId")
-    var childId: Long = 0,
-    @ColumnInfo(name = "firstName") val firstName: String? = "",
-//    @ForeignKey(
-//        Parent::class.java,
-//        parentColumns = "id",
-//        childColumns = "parentId",
-//        onDelete = CASCADE
-//    )
+    var childId: Int = 0,
+    @ColumnInfo(name = "firstName") var firstName: String? = "",
     @ColumnInfo(name = "id_fkparent", index = true)
-    var id_fkparent: Long? = 0,
+    var id_fkparent: Int? = 0,
 )
 
 

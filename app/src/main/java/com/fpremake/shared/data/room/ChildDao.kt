@@ -14,12 +14,17 @@ interface ChildDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChild(user: Child)
 
-
 //    @Delete
 //    suspend fun deleteAll()
 
-    @Query("SELECT * FROM child")
-    suspend fun getAllChilds(): List<Child>
+    @Query("UPDATE child set firstName = :childName where childId = :index")
+    fun updateChildren(childName: String, index: Int)
+
+    @Insert
+    fun insertChildren(children: List<Child>)
+
+    @Query("SELECT * from child inner join parent on parent.parentId = child.id_fkparent where child.id_fkparent = :parentId")
+    suspend fun getChildAgainstParentOne(parentId: Int): List<Child>
 
 //    @Query("Insert INTO parent (name) VALUES (:name, :child)")
 //    suspend fun insertChildIntoParent(name: String, child: Child)
@@ -34,8 +39,7 @@ interface ChildDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertParent(parent: Parent): Long
 
-    @Insert
-    fun insertChildren(children: List<Child>)
+
 
 //    @Transaction
 //    @Query("SELECT * FROM parent")
