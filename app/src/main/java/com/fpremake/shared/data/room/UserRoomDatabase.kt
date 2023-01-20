@@ -6,8 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
 import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
+import com.fpremake.screens_post_login.screen_dashboard.data.room.ParentRestaurantCrossRef
+import com.fpremake.screens_post_login.screen_dashboard.data.room.Restaurant
 
-@Database(entities = [Child::class, Parent::class], version = 3, exportSchema = true)
+@Database(entities = [Child::class, Parent::class, Restaurant::class, ParentRestaurantCrossRef::class], version = 3, exportSchema = true)
 abstract class UserRoomDatabase : RoomDatabase() {
 
     abstract fun getUserDao(): ChildDao

@@ -2,6 +2,8 @@ package com.fpremake.di.room
 
 import android.content.Context
 import androidx.room.Room
+import com.fpremake.screens_post_login.screen_dashboard.data.room.User
+import com.fpremake.shared.data.room.UserDao
 import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
@@ -18,12 +20,12 @@ object RoomModule {
     @Provides
     @Singleton
     fun provideUserRoomDatabase(@ApplicationContext appContext: Context): UserRoomDatabase {
-        return UserRoomDatabase.getDatabase(appContext)
-//        return Room.databaseBuilder(
-//            appContext,
-//            UserRoomDatabase::class.java,
-//            "user"
-//        ).build()
+//        return UserRoomDatabase.getDatabase(appContext)
+        return Room.databaseBuilder(
+            appContext,
+            UserRoomDatabase::class.java,
+            "user"
+        ).build()
     }
 
     //Dao

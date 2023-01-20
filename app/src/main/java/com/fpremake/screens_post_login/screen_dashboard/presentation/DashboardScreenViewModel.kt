@@ -6,9 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.Child
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.Parent
 import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
-import android.content.Context
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import com.fpremake.shared.Emojis
 import com.fpremake.shared.FPRemakeApplication
 import com.fpremake.shared.data.realm.UserRealmRepositoryImpl

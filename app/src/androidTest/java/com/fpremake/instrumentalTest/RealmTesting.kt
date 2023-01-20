@@ -1,4 +1,4 @@
-package com.fpremake
+package com.fpremake.instrumentalTest
 
 import android.app.Activity
 import androidx.test.core.app.ActivityScenario

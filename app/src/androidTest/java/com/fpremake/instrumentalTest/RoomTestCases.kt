@@ -1,10 +1,14 @@
-package com.fpremake
+package com.fpremake.instrumentalTest
 
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.fpremake.shared.data.room.UserDao
+import com.fpremake.shared.data.room.UserRoomDatabase
+import org.junit.After
+import org.junit.Assert
 import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
 import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
 import com.fpremake.screens_post_login.screen_dashboard.data.room.ParentWithChildren
@@ -54,6 +58,47 @@ class RoomTestCases {
         //Assert.assertNull(users)
     }
 
+    @Test
+    fun updateChild_returnTrue() {
+        val children: ArrayList<Child> = ArrayList()
+        children.add(Child(firstName = "Tanveer KHAN"))
+        children.add(Child(firstName = "Sharik KHAN"))
+        children.add(Child(firstName = "Stinger NOOB"))
+
+        val parent1 = Parent(
+            name = "Parent to update",
+        )
+
+        runBlocking {
+            val parentWithChildren = ParentWithChildren(parent1, children)
+            val parentId = childDao.insertParent(parentWithChildren.parent).toInt()
+            for (child in parentWithChildren.children) {
+                child.id_fkparent = parentId
+            }
+            childDao.insertChildren(parentWithChildren.children)
+
+
+           // parentWithChildren.children[2].firstName = "SHARsdasdasdasIK"
+            //val updatedChild = parentWithChildren.children[1]
+            parentWithChildren.children.forEach {
+                Log.e("room", "parent - Children: ${it.firstName}")
+                it.id_fkparent = parentId
+            }
+
+          //  childDao.insertChildren(parentWithChildren.children)
+
+            childDao.updateChildren("SHARsdasdasdasIK",2)
+            val childrens = childDao.getChildAgainstParentOne(1)
+           // Log.e("room", "parent updated Children: ${childrens.size}")
+            childrens.forEachIndexed { index, child ->
+                Log.e("room", "Parent # 1 -> child # ${index}: ${child.firstName} ${child.childId}")
+            }
+
+        }
+        //Assert.assertNull(users)
+    }
+
+
     //region one-to-many relationship test cases
     @Test
     fun insertChildIntoParent_returnTrue() {
@@ -78,15 +123,15 @@ class RoomTestCases {
             ParentWithChildren(Parent(name = parent2.name), childrenOfParent2)
 
         runBlocking {
-            val identifierForParent1: Long = childDao.insertParent(parentOneWithChildren.parent)
-            val identifierForParent2: Long = childDao.insertParent(parentTwoWithChildren.parent)
+            val identifierForParent1 = childDao.insertParent(parentOneWithChildren.parent)
+            val identifierForParent2 = childDao.insertParent(parentTwoWithChildren.parent)
 
             for (child in parentOneWithChildren.children) {
-                child.id_fkparent = identifierForParent1
+                child.id_fkparent = identifierForParent1.toInt()    //This identifierForParent1.toInt() return the primary key of newly inserted long
             }
 
             for (child in parentTwoWithChildren.children) {
-                child.id_fkparent = identifierForParent2
+                child.id_fkparent = identifierForParent2.toInt()
             }
 
 
