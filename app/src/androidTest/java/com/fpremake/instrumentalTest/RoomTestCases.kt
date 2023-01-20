@@ -1,4 +1,4 @@
-package com.fpremake
+package com.fpremake.instrumentalTest
 
 import android.content.Context
 import android.util.Log

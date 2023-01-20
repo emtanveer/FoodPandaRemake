@@ -1,4 +1,4 @@
-package com.fpremake
+package com.fpremake.instrumentalTest
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
