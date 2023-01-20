@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.fpremake.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
  * Splash screen class implemented [SplashScreen API] for Android 12+
  * On Android 12 or below implemented splash screen without Splash api handling
  */
+@AndroidEntryPoint
 class SplashScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 

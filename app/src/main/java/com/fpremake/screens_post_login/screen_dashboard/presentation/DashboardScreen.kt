@@ -1,24 +1,53 @@
 package com.fpremake.screens_post_login.screen_dashboard.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.invoke
+import com.fpremake.screens_post_login.screen_dashboard.data.Child
+import com.fpremake.screens_post_login.screen_dashboard.data.User
+import com.fpremake.shared.Emojis.emojis
+import com.fpremake.shared.data.realm.UserRealmRepository
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.InitialResults
+import io.realm.kotlin.notifications.UpdatedResults
+import kotlinx.coroutines.launch
+
+//region Pre-requisite setup for initializing User-Data(i.e. Emoji)
+val users = List(102) { i ->
+    User().apply {
+        this.emoji = emojis?.get(i) ?: ""
+    }
+}
+//endregion
+
 
 @Composable
-fun DashboardScreen(navController: NavHostController?) {
-    DashboardUIContent(navController)
+fun DashboardScreen(
+    dashboardScreenViewModel: DashboardScreenViewModel,
+    navController: NavHostController?
+) {
+    val scope = rememberCoroutineScope()
+    DashboardUIContent(dashboardScreenViewModel = dashboardScreenViewModel, navController = navController, userEmojiList = users)
 
+//    SideEffect {
+//        closeRealmDBConnection(scope)
+//    }
+}
+
+//region Helper methods for Navigation purpose
+private fun handleNavigationAfterDelay() {
+    /*
     LaunchedEffect(key1 = null) {
         (Dispatchers.Main){
             delay(1000)
@@ -30,15 +59,55 @@ fun DashboardScreen(navController: NavHostController?) {
 //                }
         }
     }
+    */
 }
+//endregion
 
+//region UI Content section for Dashboard Screen
 @Composable
-fun DashboardUIContent(navController: NavHostController?) {
+fun DashboardUIContent(dashboardScreenViewModel: DashboardScreenViewModel?, navController: NavHostController?, userEmojiList: List<User>?) {
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = null) {
+        // fetch all objects of a type as a flow, asynchronously
+        val users = UserRealmRepository.realmInstance.query<User>().asFlow()
+        users.collect { results ->
+            Log.d("Collecting Flow", "")
+            when (results) {
+                // print out initial results
+                is InitialResults -> {
+                    for (item in results.list) {
+                        Log.d("InitialResults", "firstName ${item.firstName}")
+                    }
+                }
+                is UpdatedResults -> {
+                    Log.d("UpdatedResults", "insertions ${results.insertions.size}")
+                    Log.d("UpdatedResults", "insertionRanges ${results.insertionRanges.size}")
+                    Log.d("UpdatedResults", "changes ${results.changes.size}")
+                    Log.d("UpdatedResults", "changeRanges ${results.changeRanges.size}")
+                    Log.d("UpdatedResults", "deletions ${results.deletions.size}")          //FIFO
+                    Log.d("UpdatedResults", "deletionRanges.size ${results.deletionRanges.size}")
+                }
+                /*is UpdatedObject<*> -> {
+                    Log.d("UpdatedObject", "changedFields ${results.changedFields}")
+                    Log.d("UpdatedObject", "obj ${results.obj}")
+                    Log.d("UpdatedObject", "isFieldChanged ${results.isFieldChanged("firstName")}")
+                }
+                is DeletedObject<*> -> {
+                    Log.d("DeletedObject", "obj ${results.obj}")
+                }*/
+                else -> {
+                    // do nothing on changes
+                }
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
@@ -49,18 +118,97 @@ fun DashboardUIContent(navController: NavHostController?) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = "Welcome to Dashboard Screen",
+                    text = "Welcome to Dashboard Screen 😼",
                     fontSize = 24.sp
                 )
             }
 
+            Button(onClick = {
+                dashboardScreenViewModel?.getAllUsersFromRealmDB()
+            }) {
+                Text(text = "Get All User")
+            }
+            Button(onClick = {
+                dashboardScreenViewModel?.performCreateAndSaveUserInRealmDB()
+            }) {
+                Text(text = "Create User")
+            }
+            Button(onClick = {
+               // getUserByNameFromRealmDB()
+            }) {
+                Text(text = "Get User by name")
+            }
+            Button(onClick = {
+               // createParent()
+            }) {
+                Text(text = "Create Parent ")
+            }
+            Button(onClick = {
+               // getChildByParentName()
+            }) {
+                Text(text = "Get Parents Child only")
+            }
+            Button(onClick = {
+                val childs =
+                    UserRealmRepository.realmInstance.query<Child>("parent.pName == 'Sharik'")
+                        .find()
+                childs.forEachIndexed { index, child ->
+                    Log.e("realm", "parent # $index, ${child.id},${child.name}}")
+                }
+            }) {
+                Text(text = "Get Parent by child")
+            }
+
+            //Delete All User
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>().find().also { delete(it) }
+                    }
+                }
+            }) {
+                Text(text = "Delete All User")
+            }
+
+            //Delete User whose firstName contain Sharik
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>("firstName == 'Sharik'").first().find()?.also { delete(it) }
+                    }
+                }
+            }) {
+                Text(text = "Delete User by Name")
+            }
+
+            //Update User Sharik firstName to Kama
+            Button(onClick = {
+                scope.launch {
+                    UserRealmRepository.realmInstance.write {
+                        query<User>("firstName == 'Sharik'").first().find()?.also { user ->
+                            user.firstName = "Kama"
+                        }
+                    }
+                }
+            }) {
+                Text(text = "Update User Name")
+            }
         }
     }
+
+
 }
 
+@Composable
+private fun UserEmojiHolder(userEmoji: String) {
+    Text(text = userEmoji)
+}
+//endregion
 
+//region Compose Preview section
 @Preview(showBackground = true)
 @Composable
 fun PreviewDefaultDashboard() {
-    DashboardUIContent(null)
+    DashboardUIContent(dashboardScreenViewModel = null, navController = null, userEmojiList = users)
 }
+//endregion
