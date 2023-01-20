@@ -5,6 +5,8 @@ buildscript {
         retrofit_version = '2.9.0'
         hilt_version = '2.38.1'
         ok_http_version = '4.9.1'
+        mockK_version = '1.13.3'
+        roomVersion = '2.3.0'
     }
 
     repositories {
@@ -18,7 +20,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
-
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0"
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.44"
         // NOTE: Do not place your application dependencies here; they belong

@@ -1,8 +1,8 @@
 package com.fpremake.di.hilt
 
-import com.fpremake.screens_post_login.screen_dashboard.data.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.User
+import com.fpremake.screens_post_login.screen_dashboard.data.realm.Child
+import com.fpremake.screens_post_login.screen_dashboard.data.realm.Parent
+import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,8 +11,8 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object RealmModule {
 
     @Provides
@@ -23,7 +23,7 @@ object RealmModule {
 
     @Provides
     @Singleton
-    fun provideRealmInstance(): RealmConfiguration {
+    fun provideRealmConfig(): RealmConfiguration {
         val config = RealmConfiguration.Builder(
             schema =
             setOf(

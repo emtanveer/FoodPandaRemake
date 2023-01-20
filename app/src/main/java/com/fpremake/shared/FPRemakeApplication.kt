@@ -1,13 +1,17 @@
 package com.fpremake.shared
 
+import android.util.Log
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.AppConfiguration
+import io.realm.kotlin.mongodb.Credentials
+import kotlinx.coroutines.runBlocking
 
 @HiltAndroidApp
 class FPRemakeApplication : MultiDexApplication() {
-//    private val realmDatabase by lazy { UserRealmRepository.realmInstance }
-//    val userRepository by lazy { UserRealmRepository }
+
     /**
      * Singleton object for [FPRemakeApplication] for future references
      */
@@ -26,7 +30,6 @@ class FPRemakeApplication : MultiDexApplication() {
         context = this
 
         MultiDex.install(context)
-
         //Init Realm initialization
         //UserRealmRepository.realmInstance
     }

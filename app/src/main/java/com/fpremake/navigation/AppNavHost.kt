@@ -101,8 +101,8 @@ fun NavGraphBuilder.mainApplicationGraph(
                     })
                 },
             ) {
-
-                DashboardScreen(getDashboardScreenViewModel(),navController)
+                val viewModel = hiltViewModel<DashboardScreenViewModel>()
+                DashboardScreen(navController, viewModel)
             }
         }
 
@@ -132,20 +132,6 @@ fun NavGraphBuilder.mainApplicationGraph(
             }
         }
     }
-}
-
-@Composable
-private fun getDashboardScreenViewModel() : DashboardScreenViewModel {
-    //var userRepository: UserRealmRepository
-    // Here we instantiate our ViewModel leveraging delegates and
-    // a trailing lambda
-
-//    val dashboardViewModel: DashboardScreenViewModel = viewModel(
-//        factory = FPRemakeViewModelFactory()
-//    )
-
-    val dashboardViewModel = hiltViewModel<DashboardScreenViewModel>()
-    return dashboardViewModel
 }
 //endregion
 
