@@ -1,9 +1,7 @@
 package com.fpremake.shared.data.room
 
 import androidx.room.*
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.room.ParentWithChildren
+import com.fpremake.screens_post_login.screen_dashboard.data.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -44,6 +42,27 @@ interface ChildDao {
 //    @Transaction
 //    @Query("SELECT * FROM parent")
 //    fun parentWithChildren(): List<ParentWithChildren>
+
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRestaurant(restaurant: Restaurant) : Long
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertParentRestaurantRelation(parentRestaurantCrossRef: ParentRestaurantCrossRef)
+
+    @Query("SELECT * FROM parent")
+    fun getParentWithRestaurants() : List<ParentWithRestaurants>
+
+    @Query("SELECT * FROM restaurant")
+    fun getRestaurantWithParents() : List<RestaurantWithParents>
+
+    @Query("SELECT * FROM parent WHERE parentId = :parentId")
+    fun getParentWithRestaurantsById(parentId: Int) : ParentWithRestaurants
+
+    @Query("SELECT * FROM restaurant WHERE restaurantId = :restaurantId ")
+    fun getRestaurantWithParentsById(restaurantId: Int) : RestaurantWithParents
 
     //endregion
 }

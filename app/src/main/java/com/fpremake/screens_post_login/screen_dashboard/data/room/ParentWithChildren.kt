@@ -2,6 +2,7 @@ package com.fpremake.screens_post_login.screen_dashboard.data.room
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Junction
 import androidx.room.Relation
 
 data class ParentWithChildren(
