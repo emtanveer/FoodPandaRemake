@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Surface
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,8 +66,13 @@ private fun handleNavigationAfterDelay() {
 
 //region UI Content section for Dashboard Screen
 @Composable
-fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<User>?, viewModel: DashboardScreenViewModel) {
+fun DashboardUIContent(
+    navController: NavHostController?,
+    userEmojiList: List<User>?,
+    viewModel: DashboardScreenViewModel
+) {
     val scope = rememberCoroutineScope()
+
     LaunchedEffect(key1 = null) {
         // fetch all objects of a type as a flow, asynchronously
         //val users = UserRealmRepository.realmInstance.query<User>().asFlow()
@@ -105,13 +112,13 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 30.dp)
-
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -126,64 +133,75 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
             }) {
                 Text(text = "Get Users")
             }
+
             Button(onClick = {
-                viewModel.getAllParentFromRealmDB()
+               //Direct user to order screen (Only for UI test purpose)
+                //TODO()
+                navController?.navigate("screen_order_now")
             }) {
-                Text(text = "Get Parents")
-            }
-            Button(onClick = {
-                viewModel.performCreateAndSaveUserInRealmDB()
-            }) {
-                Text(text = "Create User")
-            }
-            Button(onClick = {
-                viewModel.getUserByNameFromRealmDB()
-            }) {
-                Text(text = "Get User by name")
-            }
-            Button(onClick = {
-                viewModel.createParent()
-            }) {
-                Text(text = "Create Parent ")
-            }
-            Button(onClick = {
-                viewModel.getChildByParentName()
-            }) {
-                Text(text = "Get Parents Child only")
-            }
-            Button(onClick = {
-               viewModel.getParentByChild()
-            }) {
-                Text(text = "Get Parent by child")
+                Text(text = "Order Now !")
             }
 
-            //Delete All Parent
-            Button(onClick = {
-                viewModel.deleteAllParents()
-            }) {
-                Text(text = "Delete All Parent")
-            }
+/*
+             Button(onClick = {
+                    viewModel.getAllParentFromRealmDB()
+                }) {
+                    Text(text = "Get Parents")
+                }
+                Button(onClick = {
+                    viewModel.performCreateAndSaveUserInRealmDB()
+                }) {
+                    Text(text = "Create User")
+                }
+                Button(onClick = {
+                    viewModel.getUserByNameFromRealmDB()
+                }) {
+                    Text(text = "Get User by name")
+                }
+                Button(onClick = {
+                    viewModel.createParent()
+                }) {
+                    Text(text = "Create Parent ")
+                }
+                Button(onClick = {
+                    viewModel.getChildByParentName()
+                }) {
+                    Text(text = "Get Parents Child only")
+                }
+                Button(onClick = {
+                   viewModel.getParentByChild()
+                }) {
+                    Text(text = "Get Parent by child")
+                }
 
-            //Delete All User
-            Button(onClick = {
-               viewModel.deleteAllUsers()
-            }) {
-                Text(text = "Delete All User")
-            }
+                //Delete All Parent
+                Button(onClick = {
+                    viewModel.deleteAllParents()
+                }) {
+                    Text(text = "Delete All Parent")
+                }
 
-            //Delete User whose firstName contain Sharik
-            Button(onClick = {
-                viewModel.deleteUserByname()
-            }) {
-                Text(text = "Delete User by Name")
-            }
+                //Delete All User
+                Button(onClick = {
+                   viewModel.deleteAllUsers()
+                }) {
+                    Text(text = "Delete All User")
+                }
 
-            //Update User Sharik firstName to Kama
-            Button(onClick = {
-                viewModel.updateUserName()
-            }) {
-                Text(text = "Update User Name")
-            }
+                //Delete User whose firstName contain Sharik
+                Button(onClick = {
+                    viewModel.deleteUserByname()
+                }) {
+                    Text(text = "Delete User by Name")
+                }
+
+                //Update User Sharik firstName to Kama
+                Button(onClick = {
+                    viewModel.updateUserName()
+                }) {
+                    Text(text = "Update User Name")
+                }
+                */
         }
     }
 

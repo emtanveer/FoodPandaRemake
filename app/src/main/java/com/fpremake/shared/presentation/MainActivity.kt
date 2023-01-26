@@ -3,6 +3,8 @@ package com.fpremake.shared.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.VisibleForTesting
+import androidx.test.espresso.IdlingResource
 import com.fpremake.navigation.AppNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,4 +18,15 @@ class MainActivity : ComponentActivity() {
             AppNavHost()
         }
     }
+
+//    private var mIdlingResource: SimpleIdlingResource? = null
+//
+//    @VisibleForTesting
+//    fun getIdlingResource(): IdlingResource {
+//        if (mIdlingResource == null) {
+//            mIdlingResource =
+//                SimpleIdlingResource()
+//        }
+//        return mIdlingResource!!
+//    }
 }

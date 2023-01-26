@@ -18,6 +18,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreen
 import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
+import com.fpremake.screens_post_login.screen_order_now.presentation.OrderNowScreen
+import com.fpremake.screens_post_login.screen_order_now.presentation.OrderNowScreenViewModel
 import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.screens_pre_login.screen_user_location.presentation.UserLocationScreen
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +44,9 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        onBoardingGraph(navController = navController,)
+        onBoardingGraph(navController = navController,
+            scaffoldState = scaffoldState,
+            scope = scope)
 
         mainApplicationGraph(
             navController = navController,
@@ -54,11 +58,38 @@ fun AppNavHost(
 }
 
 //region onBoardingGraph
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun NavGraphBuilder.onBoardingGraph(
     navController: NavHostController,
+    scaffoldState: ScaffoldState,
+    scope: CoroutineScope,
 ) {
     composable("screen_landing_location") {
         LandingLocationScreen(navController)
+    }
+    composable("screen_user_location") {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = "Select Location")
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            scope.launch {
+                                navController.popBackStack()
+                            }
+                        })
+                        {
+                            Icon(Icons.Filled.ArrowBack, "")
+                        }
+                    },
+                )
+            },
+            scaffoldState = scaffoldState,
+        ) {
+            UserLocationScreen(navController)
+        }
     }
 }
 //endregion
@@ -105,29 +136,37 @@ fun NavGraphBuilder.mainApplicationGraph(
             }
         }
 
-        //Todo Move to Onboard Flow, we just place this here for testing purpose
-        composable("screen_user_location") {
+        composable("screen_order_now") {
             Scaffold(
                 topBar = {
                     TopAppBar(
                         title = {
-                            Text(text = "Select Location")
+                            Text(text = "Order Now")
                         },
                         navigationIcon = {
                             IconButton(onClick = {
                                 scope.launch {
-                                    navController.popBackStack()
+                                    scaffoldState.drawerState.open()
                                 }
                             })
                             {
-                                Icon(Icons.Filled.ArrowBack, "")
+                                Icon(Icons.Filled.Menu, "")
                             }
                         },
                     )
                 },
                 scaffoldState = scaffoldState,
+                drawerContent = {
+                    DrawerHeader()
+                    DrawerBody(navController = navController, closeNavDrawer = {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    })
+                },
             ) {
-                UserLocationScreen(navController)
+                val viewModel = hiltViewModel<OrderNowScreenViewModel>()
+                OrderNowScreen(navController,viewModel)
             }
         }
     }

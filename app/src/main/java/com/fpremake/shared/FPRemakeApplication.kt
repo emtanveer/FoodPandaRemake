@@ -5,7 +5,7 @@ import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class FPRemakeApplication : MultiDexApplication() {
+open class FPRemakeApplication : MultiDexApplication() {
 
     /**
      * Singleton object for [FPRemakeApplication] for future references
@@ -29,4 +29,6 @@ class FPRemakeApplication : MultiDexApplication() {
         //Init Realm initialization
         //UserRealmRepository.realmInstance
     }
+
+    open fun getBaseUrl() = "https://api.imgflip.com"
 }
