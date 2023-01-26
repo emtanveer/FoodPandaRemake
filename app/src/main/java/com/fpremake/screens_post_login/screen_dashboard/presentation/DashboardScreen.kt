@@ -2,6 +2,7 @@ package com.fpremake.screens_post_login.screen_dashboard.presentation
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Surface
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -72,11 +73,6 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
             Log.d("Collecting Flow", "")
             when (results) {
                 // print out initial results
-                is InitialResults -> {
-                    for (item in results.list) {
-                        Log.d("InitialResults", "firstName ${item.firstName}")
-                    }
-                }
                 is UpdatedResults -> {
                     Log.d("UpdatedResults", "insertions ${results.insertions.size}")
                     Log.d("UpdatedResults", "insertionRanges ${results.insertionRanges.size}")
@@ -84,6 +80,11 @@ fun DashboardUIContent(navController: NavHostController?, userEmojiList: List<Us
                     Log.d("UpdatedResults", "changeRanges ${results.changeRanges.size}")
                     Log.d("UpdatedResults", "deletions ${results.deletions.size}")          //FIFO
                     Log.d("UpdatedResults", "deletionRanges.size ${results.deletionRanges.size}")
+                }
+                is InitialResults -> {
+                    for (item in results.list) {
+                        Log.d("InitialResults", "firstName ${item.firstName}")
+                    }
                 }
                 /*is UpdatedObject<*> -> {
                     Log.d("UpdatedObject", "changedFields ${results.changedFields}")

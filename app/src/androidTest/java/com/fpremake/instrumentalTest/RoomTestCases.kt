@@ -5,13 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.fpremake.shared.data.room.UserDao
-import com.fpremake.shared.data.room.UserRoomDatabase
-import org.junit.After
-import org.junit.Assert
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.room.ParentWithChildren
+import com.fpremake.screens_post_login.screen_dashboard.data.room.*
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
 import kotlinx.coroutines.runBlocking
@@ -152,4 +146,45 @@ class RoomTestCases {
         }
     }
     //endregion
+
+    @Test
+    fun getParentAndRestaurants() {
+        val parent1 = Parent(name = "Sharik")
+        val parent2 = Parent(name = "Ali")
+        val parent3 = Parent(name = "Tanveer")
+
+        val parent1ID = childDao.insertParent(parent1).toInt()
+        val parent2ID = childDao.insertParent(parent2).toInt()
+        val parent3ID = childDao.insertParent(parent3).toInt()
+
+        val restaurant1 = Restaurant(restaurantName = "Restaurant 1")
+        val restaurant2 = Restaurant(restaurantName = "Restaurant 2")
+        val restaurant3 = Restaurant(restaurantName = "Restaurant 3")
+
+        val restaurant1ID = childDao.insertRestaurant(restaurant1).toInt()
+        val restaurant2ID = childDao.insertRestaurant(restaurant2).toInt()
+        val restaurant3ID = childDao.insertRestaurant(restaurant3).toInt()
+
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant1ID,parent1ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant1ID,parent2ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant1ID,parent3ID))
+
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant2ID,parent1ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant2ID,parent2ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant2ID,parent3ID))
+
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant3ID,parent1ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant3ID,parent2ID))
+        childDao.insertParentRestaurantRelation(ParentRestaurantCrossRef(restaurant3ID,parent3ID))
+
+        val parentWithRestaurants = childDao.getParentWithRestaurants()
+
+        parentWithRestaurants.forEach {
+            Log.e("room", "Parent -> Parent Id: {${it.parent.parentId}} - Parent Name: ${it.parent.name}")
+
+            it.restaurant.forEach {restaurant ->
+                Log.e("room", "Restaurant -> Restaurant Id: {${restaurant.restaurantId}} - Restaurant Name: ${restaurant.restaurantName}")
+            }
+        }
+    }
 }
