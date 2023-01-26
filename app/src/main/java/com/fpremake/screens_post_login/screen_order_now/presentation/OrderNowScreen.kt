@@ -1,6 +1,5 @@
 package com.fpremake.screens_post_login.screen_order_now.presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,27 +11,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.gson.Gson
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
-import com.fpremake.utils.ClassLoadingUtils
+import com.fpremake.utils.MyCustomLoader
 
-//lateinit var memeList: Data
 
 @Composable
 fun OrderNowScreen(navController: NavHostController?, viewModel: OrderNowScreenViewModel) {
-//    disableStrictMode()
-    OrderNowScreenUIContent(viewModel)
+    OrderNowScreenUIContent()
+
+    val viewState by viewModel.memesViewState.collectAsState()
+    HandleMemeApiResponse(viewState = viewState)
 }
 
 @Composable
-fun OrderNowScreenUIContent(viewModel: OrderNowScreenViewModel) {
-    val scope = rememberCoroutineScope()
-    var gson = Gson()
-    var result = ""
+fun HandleMemeApiResponse(viewState: OrderNowViewState) {
+    when (viewState.state) {
+        PageState.Content -> {
+            ShouldHandleMemeListPopulation(viewState = viewState)
+        }
+        PageState.Loading -> {
+            MyCustomLoader().LoadingScreen()
+        }
+        PageState.Error -> {
+            MyCustomLoader().LoadingScreen()
+        }
+    }
+}
+
+@Composable
+fun OrderNowScreenUIContent() {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -64,17 +74,6 @@ fun OrderNowScreenUIContent(viewModel: OrderNowScreenViewModel) {
                     text = "Two Buttons",
                     fontSize = 24.sp
                 )
-            }
-            val viewState by viewModel.memesViewState.collectAsState()
-
-            when (viewState.state) {
-                PageState.Content -> {
-                    ShouldHandleMemeListPopulation(viewState = viewState)
-                }
-                PageState.Loading -> ClassLoadingUtils().LoadingScreen()
-                PageState.Error -> {
-                    //Todo To handle exception case here.
-                }
             }
         }
     }

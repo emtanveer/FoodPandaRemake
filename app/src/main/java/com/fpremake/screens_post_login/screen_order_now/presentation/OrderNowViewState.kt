@@ -1,6 +1,5 @@
 package com.fpremake.screens_post_login.screen_order_now.presentation
 
-import com.fpremake.screens_post_login.screen_order_now.data.DataEntity
 import com.fpremake.screens_post_login.screen_order_now.data.MemeEntity
 
 data class OrderNowViewState(

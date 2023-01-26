@@ -20,17 +20,6 @@ class OrderNowScreenViewModel @Inject constructor(
     private val _memesViewState = MutableStateFlow(OrderNowViewState())
     val memesViewState: MutableStateFlow<OrderNowViewState> = _memesViewState
 
-//Way 1:
-    // then add value in init or anywhere
-    //    init {
-    //        viewModelScope.launch(Dispatchers.IO) {
-    //           val retrievedData = memeRepositoryImpl.getMemes()
-    //            _memes.emit(
-    //                value = retrievedData.data
-    //            )
-    //        }
-    //    }
-
     init {
         fetchMemes()
     }
