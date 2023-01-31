@@ -165,7 +165,9 @@ final supportDependencies = [
         //Optionally, you can include the widgets library if you want to use ScaleBar, etc.
         composeGoogleMapWidgets: 'com.google.maps.android:maps-compose-widgets:2.7.3',
 
-        idlingResources: 'androidx.test.espresso:espresso-idling-resource:3.1.1'
+        //Old
+        //idlingResources: 'androidx.test.espresso:espresso-idling-resource:3.1.1'
+        idlingResources        : 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
 ]
 
 //region KAPT
@@ -203,7 +205,8 @@ final testJUnitDependencies = [
 //region Integration/Android Testing
 final androidTestDependencies = [
         testJunit                 : 'androidx.test.ext:junit:1.1.3',
-        testEspresso              : 'androidx.test.espresso:espresso-core:3.3.0',
+//        testEspresso              : 'androidx.test.espresso:espresso-core:3.3.0',
+        testEspresso              : 'com.android.support.test.espresso:espresso-core:3.0.2',
         roomTesting               : "androidx.room:room-testing:${roomVersion}",
         // Compose UI Tests
         composeUiJUnit4           : "androidx.compose.ui:ui-test-junit4:$compose_ui_version",
@@ -219,6 +222,8 @@ final androidTestDependencies = [
 dependencies {
 
     implementation AndroidDevelopmentCoreDependencies.values()
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
+    implementation 'androidx.test:runner:1.4.0'
 
     testImplementation testJUnitDependencies.values()
 
@@ -254,4 +259,6 @@ dependencies {
     implementation offlineDatabaseDependencies.values()
     implementation supportDependencies.values()
 
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+    // androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }

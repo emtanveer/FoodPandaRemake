@@ -18,10 +18,8 @@ import com.fpremake.utils.MyCustomLoader
 
 @Composable
 fun OrderNowScreen(navController: NavHostController?, viewModel: OrderNowScreenViewModel) {
-    OrderNowScreenUIContent()
-
     val viewState by viewModel.memesViewState.collectAsState()
-    HandleMemeApiResponse(viewState = viewState)
+    OrderNowScreenUIContent(viewState)
 }
 
 @Composable
@@ -40,7 +38,7 @@ fun HandleMemeApiResponse(viewState: OrderNowViewState) {
 }
 
 @Composable
-fun OrderNowScreenUIContent() {
+fun OrderNowScreenUIContent(viewState: OrderNowViewState) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -60,26 +58,18 @@ fun OrderNowScreenUIContent() {
                 )
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp)
-            ) {
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Two Buttons",
-                    fontSize = 24.sp
-                )
-            }
+            //Creation and handling for Api Data receiving and populating List
+            HandleMemeApiResponse(viewState = viewState)
         }
+
     }
 }
 
 @Composable
 private fun ShouldHandleMemeListPopulation(viewState: OrderNowViewState) {
     val memeList = viewState.items.data?.memes
+
+    //TODO: from entity to our data model class
 
     if(memeList?.size == 0) {
         //TODO() To handle exception case here.

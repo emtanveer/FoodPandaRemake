@@ -1,17 +1,17 @@
 package com.fpremake.screens_post_login.screen_dashboard.presentation
 
+import com.fpremake.R
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Surface
 import androidx.compose.material3.Button
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,10 +22,8 @@ import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
 import com.fpremake.shared.Emojis.emojis
 import io.realm.kotlin.notifications.InitialResults
 import io.realm.kotlin.notifications.UpdatedResults
-import kotlinx.coroutines.launch
-import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.*
-import javax.inject.Inject
+
 
 //region Pre-requisite setup for initializing User-Data(i.e. Emoji)
 val users = List(102) { i ->
@@ -139,7 +137,7 @@ fun DashboardUIContent(
                 //TODO()
                 navController?.navigate("screen_order_now")
             }) {
-                Text(text = "Order Now !")
+                Text(text = stringResource(id = R.string.dashboard_order_now ))
             }
 
 /*

@@ -8,8 +8,7 @@ import java.io.InputStreamReader
 object FileReader {
   fun readStringFromFile(fileName: String): String {  
     try {  
-      val inputStream = (InstrumentationRegistry.getInstrumentation().targetContext
-        .applicationContext as FPRemakeApplication).assets.open(fileName)
+      val inputStream = (InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as FPRemakeApplication).assets.open(fileName)
       val builder = StringBuilder()  
       val reader = InputStreamReader(inputStream, "UTF-8")
       reader.readLines().forEach {  

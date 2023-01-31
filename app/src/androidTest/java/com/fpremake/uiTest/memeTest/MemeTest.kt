@@ -1,17 +1,30 @@
 package com.fpremake.uiTest.memeTest
 
 
+import android.app.Instrumentation
+import android.support.test.espresso.Espresso
+import android.support.test.espresso.IdlingRegistry
+import android.support.test.espresso.IdlingResource
+import android.util.Log
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ActivityScenario.ActivityAction
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.IdlingResource
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.fpremake.R
 import com.fpremake.shared.presentation.MainActivity
+import com.fpremake.util.waitUntilTimeout
+import com.jakewharton.espresso.OkHttp3IdlingResource
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 
@@ -19,47 +32,49 @@ import org.junit.runner.RunWith
 class MemeTest {
 
     private val mockWebServer = MockWebServer()
-    lateinit var mIdlingResource: IdlingResource
+    private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
 
 //    @get:Rule
 //    val memeTestRule = MemeTestRule(mockWebServer)
 
-    @get:Rule
-    val composeTestRule= createAndroidComposeRule<MainActivity>()
+//    @get:Rule
+//    val composeTestRule= createAndroidComposeRule<MainActivity>()
 
     @Before
     fun setup() {
-        val activityScenario: ActivityScenario<MainActivity> = ActivityScenario.launch(
-            MainActivity::class.java
+        okHttp3IdlingResource = OkHttp3IdlingResource.create(
+            "okhttp",
+            OkHttpProvider.getOkHttpClient()
         )
-        activityScenario.onActivity(object: ActivityAction<MainActivity>{
-            override fun perform(activity: MainActivity) {
-                mIdlingResource = activity.getIdlingResource();
-                // To prove that the test fails, omit this call:
-                IdlingRegistry.getInstance().register(mIdlingResource);
-            }
+        IdlingRegistry.getInstance().register(
+            okHttp3IdlingResource
+        )
 
-        })
         mockWebServer.start(8080)
     }
 
     @After
     fun teardown() {
-        if (mIdlingResource != null) {
-            IdlingRegistry.getInstance().unregister(mIdlingResource);
-        }
         mockWebServer.shutdown()
+        IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
     }
 
-//    @Test
-//    fun testSuccessfulResponse() {
-//        mockWebServer.dispatcher = object : Dispatcher() {
-//            override fun dispatch(request: RecordedRequest): MockResponse {
-//                return MockResponse()
-//                    .setResponseCode(200)
-//                    .setBody(FileReader.readStringFromFile("success_response.json"))
-//            }
-//        }
-//    }
+    @Test
+    fun testSuccessfulResponse() {
+
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                return MockResponse()
+                    .setResponseCode(200)
+                    .setBody(FileReader.readStringFromFile("/assets/success_response.json"))
+            }
+        }
+        val abc = mockWebServer.dispatcher
+
+        abc.peek().getBody()
+
+
+
+    }
 
 }
