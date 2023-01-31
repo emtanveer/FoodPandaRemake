@@ -5,13 +5,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.material3.Text
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -83,20 +81,23 @@ fun OrderNowScreenUIContent() {
 private fun ShouldHandleMemeListPopulation(viewState: OrderNowViewState) {
     val memeList = viewState.items.data?.memes
 
-    if (memeList?.size == 0) {
-        //TODO()
-        // To handle exception case here.
+    if(memeList?.size == 0) {
+        //TODO() To handle exception case here.
     } else {
-        LazyColumn() {
-            items(
-                items = memeList.let { memes ->
-                    memes!!.toList()
-                },
-                key = { item -> item.id.let { itemId -> itemId!! } },
-                itemContent = {
-                    CardItemsViewState(meme = it)
-                }
-            )
+        memeList?.let {
+            LazyColumn {
+                items(
+                    items = it.toList(),
+                    key = { item ->
+                        item.id.let { itemId ->
+                            itemId!!
+                        }
+                    },
+                    itemContent = {
+                        CardItemsViewState(meme = it)
+                    }
+                )
+            }
         }
     }
 }
