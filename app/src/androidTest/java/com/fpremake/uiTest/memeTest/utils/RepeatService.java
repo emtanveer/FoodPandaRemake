@@ -1,4 +1,4 @@
-package com.fpremake.uiTest.memeTest;
+package com.fpremake.uiTest.memeTest.utils;
 
 import android.app.IntentService;
 import android.content.Intent;

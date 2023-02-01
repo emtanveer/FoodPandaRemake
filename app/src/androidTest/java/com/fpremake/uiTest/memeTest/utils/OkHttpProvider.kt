@@ -32,7 +32,7 @@
  * THE SOFTWARE.
  */
 
-package com.fpremake.uiTest.memeTest
+package com.fpremake.uiTest.memeTest.utils
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -54,7 +54,7 @@ object OkHttpProvider {
           level = HttpLoggingInterceptor.Level.BODY
         })
         .build()
-      this.okHttpClient = okHttpClient
+      OkHttpProvider.okHttpClient = okHttpClient
 
       okHttpClient
 

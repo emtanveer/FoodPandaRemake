@@ -1,4 +1,4 @@
-package com.fpremake.uiTest.memeTest
+package com.fpremake.uiTest.memeTest.utils
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.fpremake.shared.FPRemakeApplication
