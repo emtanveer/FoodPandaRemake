@@ -8,7 +8,7 @@ import com.fpremake.shared.data.meme_repository.MemeRestClientApi
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
 import com.fpremake.utils.Constants
-import com.fpremake.utils.network_interceptor_utils.NoConnectionInterceptor
+import com.fpremake.utils.network_utils.NoConnectionInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

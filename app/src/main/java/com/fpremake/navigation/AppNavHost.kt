@@ -44,9 +44,11 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        onBoardingGraph(navController = navController,
+        onBoardingGraph(
+            navController = navController,
             scaffoldState = scaffoldState,
-            scope = scope)
+            scope = scope
+        )
 
         mainApplicationGraph(
             navController = navController,
@@ -165,8 +167,7 @@ fun NavGraphBuilder.mainApplicationGraph(
                     })
                 },
             ) {
-                val viewModel = hiltViewModel<OrderNowScreenViewModel>()
-                OrderNowScreen(navController,viewModel)
+                OrderNowScreen(navController)
             }
         }
     }

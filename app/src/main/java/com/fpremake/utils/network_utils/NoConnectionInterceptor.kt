@@ -1,10 +1,9 @@
-package com.fpremake.utils.network_interceptor_utils
+package com.fpremake.utils.network_utils
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -1,4 +1,4 @@
-package com.fpremake.utils.network_interceptor_utils
+package com.fpremake.utils.network_utils
 
 import java.io.IOException
 
