@@ -1,6 +1,9 @@
 package com.fpremake.uiTest
 
+import com.fpremake.R
+import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -10,9 +13,11 @@ import androidx.navigation.compose.rememberNavController
 import com.fpremake.navigation.AppNavHost
 import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.shared.presentation.MainActivity
+import com.fpremake.util.MyCustomTestRule
+import com.fpremake.util.TAG
+import com.fpremake.util.waitUntilTimeout
 import kotlinx.coroutines.runBlocking
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 
 class MyComposeFlowTest {
 
@@ -20,6 +25,15 @@ class MyComposeFlowTest {
 //    val composeTestRule = createComposeRule()
 //     use createAndroidComposeRule<YourActivity>() if you need access to an activity
     val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    //our Custom Test Rule:
+    @get:Rule
+    val ruleFirst = MyCustomTestRule("@Rule 1")
+
+    @Before
+    fun setup() {
+        Log.e(TAG, "@Before")
+    }
 
     @Test
     fun myTest() {
@@ -32,10 +46,45 @@ class MyComposeFlowTest {
 //        }
 
         //composeTestRule.onNodeWithText("Find Restaurants and shops").assertIsDisplayed()
+        //On Location Screen
         composeTestRule.onNodeWithText("Enter my location").performClick()
 
+        //On Dashboard Screen
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.dashboard_order_now))
+            .performClick()
 
-        composeTestRule.onNodeWithText("Welcome to Dashboard Screen \uD83D\uDE3C")
-            .assertIsDisplayed()
+
+        //Why we using this timeout before API CALL ?
+        //TODO: @SHARIK
+        composeTestRule.waitUntilTimeout(1_500)
+        //composeTestRule.onNodeWithText("Welcome to Dashboard Screen \uD83D\uDE3C").assertIsDisplayed()
+
+        composeTestRule.onNodeWithText("Drake Hotline Bling").assertIsDisplayed()
+
+        composeTestRule.waitUntilTimeout(3_500)
+    }
+
+    @After
+    fun tearDown() {
+        Log.e(TAG, "@After")
+    }
+
+    companion object {
+        @BeforeClass
+        @JvmStatic
+        fun setupClass() {
+            Log.e(TAG, "@BeforeClass")
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun tearDownClass() {
+            Log.e(TAG, "@AfterClass")
+        }
+
+        @ClassRule
+        @JvmField
+        val classFirst = MyCustomTestRule("@ClassRule 1")
+
     }
 }

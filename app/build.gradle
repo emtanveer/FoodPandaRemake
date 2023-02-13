@@ -8,6 +8,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'io.realm.kotlin'
     id 'com.google.dagger.hilt.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -74,8 +75,6 @@ final AndroidDevelopmentCoreDependencies = [
         androidxAppcompat : 'androidx.appcompat:appcompat:1.5.1',
         androidxMaterial  : 'com.google.android.material:material:1.4.0',
         androidxConstraint: 'androidx.constraintlayout:constraintlayout:2.1.4',
-
-
 ]
 
 final lifeCycleDependencies = [
@@ -89,22 +88,20 @@ final lifeCycleDependencies = [
 
 final composeDependencies = [
         // Material Design 3
-        material3ForCompose      : "androidx.compose.material3:material3:1.1.0-alpha01",
+        material3ForCompose    : "androidx.compose.material3:material3:1.1.0-alpha01",
         // or Material Design 2
-        material2ForCompose      : 'androidx.compose.material:material:1.3.0',
+        material2ForCompose    : 'androidx.compose.material:material:1.3.0',
         // or only import the main APIs for the underlying toolkit systems,
         // such as input and measurement/layout
-        composeUi                : "androidx.compose.ui:ui:$compose_ui_version",
+        composeUi              : "androidx.compose.ui:ui:$compose_ui_version",
         // Android Studio Preview support
-        composeUiToolingPreview  : "androidx.compose.ui:ui-tooling-preview:$compose_ui_version",
-        // UI Tests
-        androidTestImplementation: "androidx.compose.ui:ui-test-junit4:$compose_ui_version",
+        composeUiToolingPreview: "androidx.compose.ui:ui-tooling-preview:$compose_ui_version",
         // Optional - Integration with activities
-        composeForActivity       : "androidx.activity:activity-compose:1.6.1",
+        composeForActivity     : "androidx.activity:activity-compose:1.6.1",
         // Optional - Integration with ViewModels
-        composeForViewModels     : "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1",
+        composeForViewModels   : "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1",
         // Optional - Integration with LiveData
-        composeForLiveData       : "androidx.compose.runtime:runtime-livedata:1.3.0"
+        composeForLiveData     : "androidx.compose.runtime:runtime-livedata:1.3.0"
 ]
 
 final debugComposeDependencies = [
@@ -119,10 +116,6 @@ final navigationArchitectureDependencies = [
 
 final googleGlide = [
         glide: 'com.github.bumptech.glide:glide:4.12.0'
-]
-
-final annotationProcessorDependencies = [
-        glideCompiler: 'com.github.bumptech.glide:compiler:4.12.0'
 ]
 
 
@@ -171,6 +164,10 @@ final supportDependencies = [
 
         //Optionally, you can include the widgets library if you want to use ScaleBar, etc.
         composeGoogleMapWidgets: 'com.google.maps.android:maps-compose-widgets:2.7.3',
+
+        //Old
+        //idlingResources: 'androidx.test.espresso:espresso-idling-resource:3.1.1'
+        idlingResources        : 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
 ]
 
 //region KAPT
@@ -181,6 +178,7 @@ final kaptCompileDependencies = [
         roomKapt: "androidx.room:room-compiler:${roomVersion}"
 ]
 //endregion
+
 
 //region AnnotationProcessor
 final compileDependencies = [
@@ -206,18 +204,27 @@ final testJUnitDependencies = [
 
 //region Integration/Android Testing
 final androidTestDependencies = [
-        testJunit        : 'androidx.test.ext:junit:1.1.3',
-        testEspresso     : 'androidx.test.espresso:espresso-core:3.3.0',
-        roomTesting      : "androidx.room:room-testing:${roomVersion}",
+        testJunit                 : 'androidx.test.ext:junit:1.1.3',
+//        testEspresso              : 'androidx.test.espresso:espresso-core:3.3.0',
+        testEspresso              : 'com.android.support.test.espresso:espresso-core:3.0.2',
+        roomTesting               : "androidx.room:room-testing:${roomVersion}",
         // Compose UI Tests
-        composeUiJUnit4  : "androidx.compose.ui:ui-test-junit4:$compose_ui_version",
-        composeUiTestCire: 'androidx.test:core-ktx:1.4.0'
+        composeUiJUnit4           : "androidx.compose.ui:ui-test-junit4:$compose_ui_version",
+        composeUiTestCore         : 'androidx.test:core-ktx:1.4.0',
+
+        //UI testing with mock using//MockWebServer
+
+        composeUiTestMockWebserver: "com.squareup.okhttp3:mockwebserver:4.9.3",
 ]
+//endregion
 //endregion
 
 dependencies {
 
     implementation AndroidDevelopmentCoreDependencies.values()
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
+    implementation 'androidx.test:runner:1.4.0'
+
     testImplementation testJUnitDependencies.values()
 
     androidTestImplementation androidTestDependencies.values()
@@ -229,6 +236,7 @@ dependencies {
 
     //All required Compose Library
     implementation composeDependencies.values()
+
 
     //Navigation Architecture Library
     implementation navigationArchitectureDependencies.values()
@@ -251,4 +259,6 @@ dependencies {
     implementation offlineDatabaseDependencies.values()
     implementation supportDependencies.values()
 
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+    // androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }
