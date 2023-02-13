@@ -1,10 +1,10 @@
 package com.fpremake.screens_post_login.screen_order_now.presentation
 
-import com.fpremake.screens_post_login.screen_order_now.data.MemeEntity
+import com.fpremake.screens_post_login.screen_order_now.business.MemeDetail
 
 data class OrderNowViewState(
-//    val items: ArrayList<MemeDetailEntity> = arrayListOf(),
-    val items: MemeEntity? = MemeEntity(), //Initialized with null values
+    val items: ArrayList<MemeDetail> = arrayListOf(),
+//    val items: MemeEntity? = MemeDetailEntity, //Initialized with null values
     val state: PageState = PageState.Content,
 )
 

@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.fpremake.screens_post_login.screen_order_now.data.MemeDetailEntity
+import com.fpremake.screens_post_login.screen_order_now.business.MemeDetail
 
 @Composable
-fun CardItemsViewState(meme: MemeDetailEntity) {
+fun CardItemsViewState(meme: MemeDetail) {
     Row {
         Column(
             modifier = Modifier

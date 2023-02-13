@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
-import com.fpremake.screens_post_login.screen_order_now.data.MemeDetailEntity
+import com.fpremake.screens_post_login.screen_order_now.business.MemeDetail
 import com.fpremake.utils.MyCustomLoader
 import com.fpremake.utils.network_utils.ConnectionState
 import com.fpremake.utils.network_utils.observeConnectivityAsFlow
@@ -112,7 +111,7 @@ fun OrderNowScreen(
     val connectionState by context.observeConnectivityAsFlow()
         .collectAsState(initial = ConnectionState.Available)
     val viewState by viewModel.memesViewState.collectAsState()
-    val memeList = viewState.items?.data?.memes
+    val memeList = viewState.items
     val isLoading by viewModel.isLoading.collectAsState()
 
     DisposableEffect(lifeCycleOwner) {
@@ -184,7 +183,7 @@ fun OrderNowScreen(
 }
 
 @Composable
-fun OrderNowScreenUIContent(memeList: ArrayList<MemeDetailEntity>?) {
+fun OrderNowScreenUIContent(memeList: ArrayList<MemeDetail>?) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -213,7 +212,7 @@ fun OrderNowScreenUIContent(memeList: ArrayList<MemeDetailEntity>?) {
 }
 
 @Composable
-fun MemeListView(memeList: ArrayList<MemeDetailEntity>?) {
+fun MemeListView(memeList: ArrayList<MemeDetail>?) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(
             items = memeList?.toList() ?: emptyList(),

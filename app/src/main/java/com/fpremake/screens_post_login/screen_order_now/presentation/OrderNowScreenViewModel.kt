@@ -3,7 +3,7 @@ package com.fpremake.screens_post_login.screen_order_now.presentation
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.fpremake.shared.FPRemakeApplication
-import com.fpremake.shared.data.meme_repository.MemeRepository
+import com.fpremake.screens_post_login.screen_order_now.data.repository.MemeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -39,7 +39,7 @@ class OrderNowScreenViewModel @Inject constructor(
             memeRepository.getMemes()
                 .onStart {
                     _memesViewState.value = _memesViewState.value.copy(state = PageState.Loading)
-                    delay(3000L)
+                    delay(5000L)
                 }
                 .onCompletion {
                     _memesViewState.value = _memesViewState.value.copy(state = PageState.Content)
