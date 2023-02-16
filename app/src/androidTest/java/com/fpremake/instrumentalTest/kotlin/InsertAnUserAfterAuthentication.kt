@@ -3,9 +3,9 @@ package com.fpremake.instrumentalTest.kotlin
 import android.util.Log
 import com.fpremake.instrumentalTest.Expectation
 import com.fpremake.instrumentalTest.RealmTesting
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.Child
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.Parent
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.User
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query

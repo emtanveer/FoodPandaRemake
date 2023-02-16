@@ -148,26 +148,28 @@ final offlineDatabaseDependencies = [
 
 final supportDependencies = [
         //Splash screen Api
-        splashScreen           : "androidx.core:core-splashscreen:1.0.0",
+        splashScreen             : "androidx.core:core-splashscreen:1.0.0",
 
         //MultiDex
-        multiDex               : "androidx.multidex:multidex:2.0.1",
+        multiDex                 : "androidx.multidex:multidex:2.0.1",
 
         //GoogleMap
-        composeGoogleMap       : 'com.google.maps.android:maps-compose:2.7.3',
+        composeGoogleMap         : 'com.google.maps.android:maps-compose:2.7.3',
 
         //Make sure to also include the latest version of the Maps SDK for Android
-        googleMapsPlayServices : 'com.google.android.gms:play-services-maps:18.0.2',
+        googleMapsPlayServices   : 'com.google.android.gms:play-services-maps:18.0.2',
 
         //Also include Compose version `1.2.0-alpha03` or higher - for example:
-        composeFoundation      : 'androidx.compose.foundation:foundation:1.3.1',
+        composeFoundation        : 'androidx.compose.foundation:foundation:1.3.1',
 
         //Optionally, you can include the widgets library if you want to use ScaleBar, etc.
-        composeGoogleMapWidgets: 'com.google.maps.android:maps-compose-widgets:2.7.3',
+        composeGoogleMapWidgets  : 'com.google.maps.android:maps-compose-widgets:2.7.3',
 
         //Old
         //idlingResources: 'androidx.test.espresso:espresso-idling-resource:3.1.1'
-        idlingResources        : 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+        idlingResources          : 'com.android.support.test.espresso:espresso-idling-resource:3.0.2',
+
+        googleAuthForGoogleSignIn: 'com.google.android.gms:play-services-auth:20.4.1'
 ]
 
 //region KAPT

@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.fpremake.screens_post_login.screen_dashboard.data.room.*
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

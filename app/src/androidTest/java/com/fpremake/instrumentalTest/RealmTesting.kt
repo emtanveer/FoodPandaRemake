@@ -2,7 +2,7 @@ package com.fpremake.instrumentalTest
 
 import android.app.Activity
 import androidx.test.core.app.ActivityScenario
-import com.fpremake.test.RealmTestApplicationClass
+import com.fpremake.shared.data.realm.RealmTestApplicationClass
 import org.junit.Assert
 import org.junit.Before
 import java.util.concurrent.atomic.AtomicBoolean

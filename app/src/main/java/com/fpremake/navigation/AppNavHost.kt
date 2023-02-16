@@ -9,22 +9,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreen
-import com.fpremake.screens_post_login.screen_dashboard.presentation.DashboardScreenViewModel
-import com.fpremake.screens_post_login.screen_order_now.presentation.OrderNowScreen
-import com.fpremake.screens_post_login.screen_order_now.presentation.OrderNowScreenViewModel
-import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
-import com.fpremake.screens_pre_login.screen_user_location.presentation.UserLocationScreen
+import com.fpremake.ui.screens_post.screen_dashboard.presentation.DashboardScreen
+import com.fpremake.ui.screens_post.screen_dashboard.presentation.DashboardScreenViewModel
+import com.fpremake.ui.screens_post.screen_dashboard.presentation.component.SignInModalBottomSheetContent
+import com.fpremake.ui.screens_post.screen_order_now.presentation.OrderNowScreen
+import com.fpremake.ui.screens_pre.screen_landing_location.presentation.LandingLocationScreen
+import com.fpremake.ui.screens_pre.screen_user_location.presentation.UserLocationScreen
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
@@ -36,6 +37,9 @@ fun AppNavHost(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     //endregion
+
+    val modalBottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
     //region Root Navigation Graph
     NavHost(
@@ -53,7 +57,8 @@ fun AppNavHost(
         mainApplicationGraph(
             navController = navController,
             scaffoldState = scaffoldState,
-            scope = scope
+            scope = scope,
+            modalBottomSheetState = modalBottomSheetState
         )
     }
     //endregion
@@ -97,12 +102,15 @@ fun NavGraphBuilder.onBoardingGraph(
 //endregion
 
 //region mainApplicationGraph
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun NavGraphBuilder.mainApplicationGraph(
     navController: NavHostController,
     scaffoldState: ScaffoldState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    modalBottomSheetState: ModalBottomSheetState
 ) {
+
     navigation(startDestination = "screen_dashboard", route = "post-login") {
         composable("screen_dashboard") {
             Scaffold(
@@ -126,15 +134,31 @@ fun NavGraphBuilder.mainApplicationGraph(
                 scaffoldState = scaffoldState,
                 drawerContent = {
                     DrawerHeader()
-                    DrawerBody(navController = navController, closeNavDrawer = {
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                    })
+                    DrawerBody(
+                        navController = navController,
+                        closeNavDrawer = {
+                            scope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        },
+                        modalBottomSheetState = modalBottomSheetState
+                    )
                 },
             ) {
-                val viewModel = hiltViewModel<DashboardScreenViewModel>()
-                DashboardScreen(navController, viewModel)
+                ModalBottomSheetLayout(
+                    sheetState = modalBottomSheetState,
+                    sheetContent = {
+                        SignInModalBottomSheetContent {
+                            scope.launch {
+                                modalBottomSheetState.hide()
+                            }
+                        }
+                    }
+                ) {
+                    /* Define your main screen content here */
+                    val viewModel = hiltViewModel<DashboardScreenViewModel>()
+                    DashboardScreen(navController, viewModel)
+                }
             }
         }
 
@@ -160,11 +184,15 @@ fun NavGraphBuilder.mainApplicationGraph(
                 scaffoldState = scaffoldState,
                 drawerContent = {
                     DrawerHeader()
-                    DrawerBody(navController = navController, closeNavDrawer = {
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                    })
+                    DrawerBody(
+                        navController = navController,
+                        closeNavDrawer = {
+                            scope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        },
+                        modalBottomSheetState = modalBottomSheetState
+                    )
                 },
             ) {
                 OrderNowScreen(navController)

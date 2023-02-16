@@ -2,7 +2,7 @@ package com.fpremake.di.room
 
 import android.content.Context
 import androidx.room.Room
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.Child
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
 import dagger.Module

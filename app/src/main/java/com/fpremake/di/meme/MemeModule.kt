@@ -1,10 +1,10 @@
 package com.fpremake.di.meme
 
 import android.content.Context
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
-import com.fpremake.screens_post_login.screen_order_now.data.repository.MemeRepository
-import com.fpremake.screens_post_login.screen_order_now.data.repository.api.MemeRepositoryImpl
-import com.fpremake.screens_post_login.screen_order_now.data.repository.api.MemeRestClientApi
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.Child
+import com.fpremake.ui.screens_post.screen_order_now.data.repository.MemeRepository
+import com.fpremake.ui.screens_post.screen_order_now.data.repository.api.MemeRepositoryImpl
+import com.fpremake.ui.screens_post.screen_order_now.data.repository.api.MemeRestClientApi
 import com.fpremake.shared.data.room.ChildDao
 import com.fpremake.shared.data.room.UserRoomDatabase
 import com.fpremake.utils.Constants

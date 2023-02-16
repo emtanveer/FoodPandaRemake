@@ -3,9 +3,9 @@ package com.fpremake
 
 import android.util.Log
 import com.fpremake.di.hilt.RealmModule
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.realm.User
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.Child
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.Parent
+import com.fpremake.ui.screens_post.screen_dashboard.data.realm.User
 import com.fpremake.shared.Emojis
 import com.fpremake.shared.data.realm.DataSource
 import com.fpremake.shared.data.realm.UserRealmRepositoryImpl

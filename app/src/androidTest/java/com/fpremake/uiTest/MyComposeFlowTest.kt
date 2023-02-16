@@ -2,21 +2,14 @@ package com.fpremake.uiTest
 
 import com.fpremake.R
 import android.util.Log
-import androidx.activity.compose.setContent
-import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.navigation.compose.rememberNavController
-import com.fpremake.navigation.AppNavHost
-import com.fpremake.screens_pre_login.screen_landing_location.presentation.LandingLocationScreen
 import com.fpremake.shared.presentation.MainActivity
 import com.fpremake.util.MyCustomTestRule
 import com.fpremake.util.TAG
 import com.fpremake.util.waitUntilTimeout
-import kotlinx.coroutines.runBlocking
 import org.junit.*
 
 class MyComposeFlowTest {

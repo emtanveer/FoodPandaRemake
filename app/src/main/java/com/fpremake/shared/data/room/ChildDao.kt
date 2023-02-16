@@ -1,7 +1,7 @@
 package com.fpremake.shared.data.room
 
 import androidx.room.*
-import com.fpremake.screens_post_login.screen_dashboard.data.room.*
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao

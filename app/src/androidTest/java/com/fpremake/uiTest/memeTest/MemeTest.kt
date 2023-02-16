@@ -1,8 +1,8 @@
 package com.fpremake.uiTest.memeTest
 
 
-import android.support.test.espresso.IdlingRegistry
 import android.util.Log
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fpremake.uiTest.memeTest.utils.FileReader
 import com.fpremake.uiTest.memeTest.utils.OkHttpProvider

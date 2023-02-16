@@ -1,12 +1,15 @@
 package com.fpremake.navigation
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -16,6 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fpremake.R.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun DrawerHeader() {
@@ -29,22 +34,25 @@ fun DrawerHeader() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DrawerBody(navController: NavHostController?, closeNavDrawer: () -> Unit) {
+fun DrawerBody(navController: NavHostController?, closeNavDrawer: () -> Unit, modalBottomSheetState: ModalBottomSheetState) {
     Column {
-        DefaultDrawerNavigationItemsWithSelectionEnabled(navController, closeNavDrawer)
+        DefaultDrawerNavigationItemsWithSelectionEnabled(navController, closeNavDrawer, modalBottomSheetState)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
     navController: NavHostController?,
-    closeNavDrawer: () -> Unit
+    closeNavDrawer: () -> Unit,
+    modalBottomSheetState: ModalBottomSheetState
 ) {
     val navBackStackEntry by navController?.currentBackStackEntryAsState()!!
     val currentRoute = navBackStackEntry?.destination?.route
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -107,6 +115,28 @@ private fun DefaultDrawerNavigationItemsWithSelectionEnabled(
                 closeNavDrawer()
             },
         )
+
+        NavigationDrawerItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = drawable.ic_dashboard),
+                    contentDescription = "Location",
+                    modifier = Modifier.size(
+                        width = 25.dp,
+                        height = 25.dp
+                    )
+                )
+            },
+            label = { Text(text = "SignInBottomSheet") },
+            selected = false,
+            onClick = {
+                coroutineScope.launch {
+                    modalBottomSheetState.show()
+                }
+                closeNavDrawer()
+            },
+        )
+
     }
 
 }

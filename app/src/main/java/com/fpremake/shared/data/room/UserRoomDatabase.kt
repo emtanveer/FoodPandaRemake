@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Child
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Parent
-import com.fpremake.screens_post_login.screen_dashboard.data.room.ParentRestaurantCrossRef
-import com.fpremake.screens_post_login.screen_dashboard.data.room.Restaurant
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.Child
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.Parent
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.ParentRestaurantCrossRef
+import com.fpremake.ui.screens_post.screen_dashboard.data.room.Restaurant
 
 @Database(entities = [Child::class, Parent::class, Restaurant::class, ParentRestaurantCrossRef::class], version = 3, exportSchema = true)
 abstract class UserRoomDatabase : RoomDatabase() {
